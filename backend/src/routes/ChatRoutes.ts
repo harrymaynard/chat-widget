@@ -7,7 +7,7 @@ module.exports = (function() {
         message: 'hello world!'
       })
     } catch (error) {
-      logService.error('Some bad happened.')
+      logService.error('Something bad happened.')
       response.status(500)
       response.end()
     }

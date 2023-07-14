@@ -31,9 +31,9 @@ module.exports = (function() {
       this.app.get('/api/chat/getMessages', chatRoutes.getMessages)
 
       // All other GET requests not handled before will return the frontend app
-      this.app.get('*', (req: any, res: any) => {
-        res.sendFile(path.resolve(__dirname, '../../../frontend/dist', 'index.html'))
-      });
+      // this.app.get('*', (req: any, res: any) => {
+      //   res.sendFile(path.resolve(__dirname, '../../../frontend/dist', 'index.html'))
+      // })
 
       this.httpServer = http.createServer(this.app)
       // Start express server.
