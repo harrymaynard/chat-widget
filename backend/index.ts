@@ -1,8 +1,17 @@
+// @ts-ignore
+import { compareVersions } from 'compare-versions'
+import { config as dotEnvConfig } from 'dotenv'
+import path from 'path'
+import { fileURLToPath } from 'url'
+import { loadJSON } from './src/helpers/LoaderHelper'
+import Application from './src/Application'
+
+const packageJSON = loadJSON('./package.json', import.meta.url)
+
 const init = () => {
   validateNodeVersion()
   loadConfig()
 
-  const Application = require('./src/Application')
   const application = new Application()
   application.start()
 
@@ -14,8 +23,6 @@ const init = () => {
 };
 
 const validateNodeVersion = () => {
-  const packageJSON = require('./package.json')
-  const compareVersions = require('compare-versions')
   const minimumNodeVersion = packageJSON.engines.node.replace('>=', '')
   const currentNodeVersion = process.version.replace('v', '')
   
@@ -28,7 +35,9 @@ const validateNodeVersion = () => {
 
 const loadConfig = () => {
   const configFileName = '.env'
-  const config = require('dotenv').config({ path: __dirname + `/./${configFileName}`})
+  const __filename = fileURLToPath(import.meta.url)
+  const __dirname = path.dirname(__filename)
+  const config = dotEnvConfig({ path: __dirname + `/./${configFileName}`})
   
   if (config.error) {
     console.error(`could not read '${configFileName}' config file.`)
