@@ -1,25 +1,24 @@
-module.exports = (function() {
-  const ExpressService = require('./services/ExpressService')
-  
-  class ServiceManager {
-    expressService
+import ExpressService from './services/ExpressService'
 
-    constructor() {
-      this.expressService = new ExpressService()
-    }
+class ServiceManager {
+  private expressService
 
-    public async start(): Promise<void> {
-      await this.expressService.start()
-    }
-
-    public async stop(): Promise<void> {
-      await this.expressService.stop()
-    }
-
-    public async restart(): Promise<void> {
-      await this.stop()
-      await this.start()
-    }
+  constructor() {
+    this.expressService = new ExpressService()
   }
-  return new ServiceManager()
-})()
+
+  public async start(): Promise<void> {
+    await this.expressService.start()
+  }
+
+  public async stop(): Promise<void> {
+    await this.expressService.stop()
+  }
+
+  public async restart(): Promise<void> {
+    await this.stop()
+    await this.start()
+  }
+}
+
+export default new ServiceManager()

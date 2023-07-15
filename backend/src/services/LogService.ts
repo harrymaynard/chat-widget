@@ -1,35 +1,34 @@
+import winston from 'winston'
+
 class LogService {
   logger: any
-  winston: any
 
   constructor() {
-    this.winston = require('winston')
-
     this.createLogger()
   }
 
   private createLogger(): void {
     const fileName = process.env.LOG_FILE_NAME ? process.env.LOG_FILE_NAME : 'logs/server.log'
 
-    this.logger = this.winston.createLogger({
+    this.logger = winston.createLogger({
       level: process.env.LOG_LEVEL,
       transports: [
-        new this.winston.transports.Console({
-          format: this.winston.format.combine(
-            this.winston.format.colorize(),
-            this.winston.format.timestamp({
+        new winston.transports.Console({
+          format: winston.format.combine(
+            winston.format.colorize(),
+            winston.format.timestamp({
               format: 'YYYY-MM-DD HH:mm:ss'
             }),
-            this.winston.format.printf((info: any) => `${info.timestamp} ${info.level}: ${info.message}`)
+            winston.format.printf((info: any) => `${info.timestamp} ${info.level}: ${info.message}`)
           )
         }),
-        new this.winston.transports.File({
+        new winston.transports.File({
           filename: fileName,
-          format: this.winston.format.combine(
-            this.winston.format.timestamp({
+          format: winston.format.combine(
+            winston.format.timestamp({
               format: 'YYYY-MM-DD HH:mm:ss'
             }),
-            this.winston.format.json()
+            winston.format.json()
           )
         })
       ]
@@ -73,4 +72,4 @@ class LogService {
   }
 }
 
-module.exports = new LogService()
+export default new LogService()

@@ -1,6 +1,7 @@
-const ServiceManager = require('./ServiceManager');
+import ip from 'ip'
+import ServiceManager from './ServiceManager'
 
-module.exports = class Application {
+export default class Application {
   async start(): Promise<void> {
     const networkIPAddress = await this.getNetworkIPAddress()
     await ServiceManager.start()
@@ -23,7 +24,6 @@ module.exports = class Application {
 
   private getNetworkIPAddress(): Promise<string> {
     return new Promise((resolve) => {
-      const ip = require('ip')
       const address = ip.address()
       resolve(address)
     })

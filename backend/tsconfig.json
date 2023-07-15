@@ -7,6 +7,7 @@
     "allowJs": true,
     "esModuleInterop": true,
     "moduleResolution": "node",
+    "resolveJsonModule": true,
     "strict": true, 
   },
   "include": [
@@ -14,4 +15,8 @@
     "index.ts"
   ],
   "exclude": ["node_modules"],
+  "ts-node": {
+    "esm": true,
+    "experimentalSpecifierResolution": "node"
+  }
 }
