@@ -19,15 +19,14 @@ export default class ExpressService {
     this.app.use(express.json())
 
     // Have Node serve the files for our built frontend app
-    
     this.app.use(express.static(path.resolve(__dirname, '../../../frontend/dist')))
 
     // Set CORS headers.
-    this.app.use((req: any, res: any, next: Function) => {
-      res.setHeader('Access-Control-Allow-Origin', '*')
-      res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS')
-      res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization')
-      res.header('Access-Control-Allow-Credentials', true)
+    this.app.use((request: any, response: any, next: Function) => {
+      response.setHeader('Access-Control-Allow-Origin', '*')
+      response.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS')
+      response.setHeader('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+      response.setHeader('Access-Control-Allow-Credentials', true)
       return next()
     })
 
@@ -38,14 +37,14 @@ export default class ExpressService {
     //   res.sendFile(path.resolve(__dirname, '../../../frontend/dist', 'index.html'))
     // })
 
+    // Create and start express server.
     this.httpServer = http.createServer(this.app)
-    // Start express server.
     this.httpServer.listen(process.env.WEB_SERVER_PORT)
     logService.info('Started web server')
   }
 
   public async stop() {
-    logService.info('stopped web server')
+    logService.info('Stopped web server')
   }
 }
 
