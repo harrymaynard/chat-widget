@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/harrymaynard/chat-bot-widget/issues"
   },
-  "homepage": "https://github.com/harrymaynard/chat-bot-widget#readme"
+  "homepage": "https://github.com/harrymaynard/chat-bot-widget#readme",
+  "dependencies": {
+    "socket.io-client": "^4.7.1"
+  }
 }
