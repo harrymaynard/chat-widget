@@ -1,13 +1,9 @@
-import winston from 'winston'
+import winston, { type Logger } from 'winston'
 
 class LogService {
-  logger: any
+  private logger: Logger
 
   constructor() {
-    this.createLogger()
-  }
-
-  private createLogger(): void {
     const fileName = process.env.LOG_FILE_NAME ? process.env.LOG_FILE_NAME : 'logs/server.log'
 
     this.logger = winston.createLogger({

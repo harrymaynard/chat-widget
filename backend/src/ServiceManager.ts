@@ -1,18 +1,33 @@
-import ExpressService from './services/ExpressService'
+import LogService from './services/LogService'
+import WebServerService from './services/WebServerService'
+import WebSocketService from './services/WebSocketService'
 
 class ServiceManager {
-  private expressService
+  private webServerService: WebServerService
+  private webSocketService: WebSocketService
 
   constructor() {
-    this.expressService = new ExpressService()
+    this.webServerService = new WebServerService()
+    this.webSocketService = new WebSocketService()
   }
 
   public async start(): Promise<void> {
-    await this.expressService.start()
+    try {
+      const httpServer = await this.webServerService.start()
+      await this.webSocketService.start(httpServer)
+      httpServer.listen(process.env.WEB_SERVER_PORT)
+    } catch (error) {
+      LogService.error('Failed to start server.')
+    }
   }
 
   public async stop(): Promise<void> {
-    await this.expressService.stop()
+    try {
+      await this.webServerService.stop()
+      await this.webSocketService.stop()
+    } catch (error) {
+      LogService.error('Failed to safely stop server')
+    }
   }
 
   public async restart(): Promise<void> {

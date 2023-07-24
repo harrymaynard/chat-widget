@@ -12,7 +12,7 @@ export default class ExpressService {
   private app: any
   private httpServer: any
 
-  public start() {
+  public async start() {
     this.app = express()
     
     // Make request JSON payload available for all API endpoints.
@@ -39,8 +39,10 @@ export default class ExpressService {
 
     // Create and start express server.
     this.httpServer = http.createServer(this.app)
-    this.httpServer.listen(process.env.WEB_SERVER_PORT)
+    
     logService.info('Started web server')
+
+    return this.httpServer
   }
 
   public async stop() {
