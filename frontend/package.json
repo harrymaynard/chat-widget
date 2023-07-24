@@ -19,12 +19,16 @@
   },
   "homepage": "https://github.com/harrymaynard/chat-bot-widget#readme",
   "dependencies": {
-    "socket.io-client": "^4.7.1"
+    "socket.io-client": "^4.7.1",
+    "vue": "^3.3.4"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^6.2.0",
     "@typescript-eslint/parser": "^6.2.0",
+    "@vitejs/plugin-vue": "^4.2.3",
+    "sass": "^1.32.11",
     "vite": "^4.4.7",
-    "vite-plugin-eslint": "^1.8.1"
+    "vite-plugin-eslint": "^1.8.1",
+    "vue-eslint-parser": "^9.3.1"
   }
 }
