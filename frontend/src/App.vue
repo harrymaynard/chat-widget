@@ -1,9 +1,14 @@
+<script lang="ts" setup>
+import ChatApp from '@/components/ChatApp.vue'
+</script>
+
 <template>
   <div class="component">
     <div class="content">
       <h1>Title Here</h1>
     </div>
   </div>
+  <ChatApp />
 </template>
 
 <style lang="scss" scoped>
@@ -12,7 +17,7 @@
   height: 100%;
 
   .content {
-    max-width: 1024px;
+    max-width: 768px;
     height: inherit;
     margin: auto;
     padding: 20px;

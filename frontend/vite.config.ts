@@ -7,7 +7,7 @@ import path from 'path'
 export default defineConfig({
   plugins: [vue(), eslintPlugin()],
   resolve: {
-    extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json'],
+    extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json', '.vue'],
     alias: {
       '@': path.resolve(__dirname, './src'),
     },
