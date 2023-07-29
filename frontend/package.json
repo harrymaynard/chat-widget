@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/harrymaynard/chat-widget#readme",
   "dependencies": {
+    "pinia": "^2.1.6",
     "socket.io-client": "^4.7.1",
     "vue": "^3.3.4"
   },
