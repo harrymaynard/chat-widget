@@ -10,14 +10,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/harrymaynard/chat-bot-widget.git"
+    "url": "git+https://github.com/harrymaynard/chat-widget.git"
   },
   "author": "Harry Maynard",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/harrymaynard/chat-bot-widget/issues"
+    "url": "https://github.com/harrymaynard/chat-widget/issues"
   },
-  "homepage": "https://github.com/harrymaynard/chat-bot-widget#readme",
+  "homepage": "https://github.com/harrymaynard/chat-widget#readme",
   "dependencies": {
     "socket.io-client": "^4.7.1",
     "vue": "^3.3.4"

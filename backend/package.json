@@ -11,14 +11,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/harrymaynard/chat-bot-widget.git"
+    "url": "git+https://github.com/harrymaynard/chat-widget.git"
   },
   "author": "Harry Maynard",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/harrymaynard/chat-bot-widget/issues"
+    "url": "https://github.com/harrymaynard/chat-widget/issues"
   },
-  "homepage": "https://github.com/harrymaynard/chat-bot-widget#readme",
+  "homepage": "https://github.com/harrymaynard/chat-widget#readme",
   "dependencies": {
     "@socket.io/redis-adapter": "^8.2.1",
     "@socket.io/redis-emitter": "^5.1.0",
