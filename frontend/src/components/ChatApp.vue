@@ -36,13 +36,12 @@ const handleSubmitMessage = () => {
         <a
           href="javascript:void(0)"
           title="Minimize"
-          class="close-chat-icon-container"
           @click="handleClickCloseChat"
         >
-          <IconDash />
+          <IconDash class="close-chat-icon" />
         </a>
       </div>
-      <div class="chat-body"></div>
+      <div class="chat-body">Chat conversation here.</div>
       <div class="chat-footer">
         <form @submit.prevent="handleSubmitMessage">
           <input
@@ -96,7 +95,7 @@ $spacing: 10px;
     .title {
       flex: 1;
     }
-    .close-chat-icon-container {
+    .close-chat-icon {
       color: #FFF;
     }
   }
