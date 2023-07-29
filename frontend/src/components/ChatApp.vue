@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import IconChat from '@/components/icons/IconChat.vue'
-import IconDash from '@/components/icons/IconDash.vue'
+import ChatWindow from '@/components/ChatWindow.vue'
 
 const isChatOpen = ref<boolean>(false)
 
@@ -9,12 +9,8 @@ const handleClickChatIcon = () => {
   isChatOpen.value = !isChatOpen.value
 }
 
-const handleClickCloseChat = () => {
+const handleCloseChatWindow = () => {
   isChatOpen.value = false
-}
-
-const handleSubmitMessage = () => {
-  console.log('send message')
 }
 </script>
 
@@ -31,34 +27,20 @@ const handleSubmitMessage = () => {
       v-if="isChatOpen"
       class="chat-container"
     >
-      <div class="chat-header">
-        <div class="title">Conversation</div>
-        <a
-          href="javascript:void(0)"
-          title="Minimize"
-          @click="handleClickCloseChat"
-        >
-          <IconDash class="close-chat-icon" />
-        </a>
-      </div>
-      <div class="chat-body">Chat conversation here.</div>
-      <div class="chat-footer">
-        <form @submit.prevent="handleSubmitMessage">
-          <input
-            type="text"
-          />
-          <button type="submit">Send</button>
-        </form>
-      </div>
+      <ChatWindow
+        @close="handleCloseChatWindow"
+      />
     </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
-$theme-color-primary: #115464;
+@import '@/styles/variables.scss';
+
 $button-icon-size: 32px;
 $button-padding: 10px;
 $spacing: 10px;
+
 .chat-icon-container {
   position: fixed;
   bottom: $spacing;
@@ -66,6 +48,7 @@ $spacing: 10px;
   padding: $button-padding;
   background: $theme-color-primary;
   border-radius: 50%;
+  box-shadow: 0 0 10px 0px rgba(0, 0, 0, .5);
 
   .icon {
     width: $button-icon-size;
@@ -84,34 +67,6 @@ $spacing: 10px;
   border-radius: 5px;
   display: flex;
   flex-direction: column;
-
-  .chat-header {
-    background: $theme-color-primary;
-    color: #FFF;
-    padding: 4px;
-    display: flex;
-    justify-content: center;
-
-    .title {
-      flex: 1;
-    }
-    .close-chat-icon {
-      color: #FFF;
-    }
-  }
-  .chat-body {
-    flex: 1;
-  }
-  .chat-footer {
-    background: $theme-color-primary;
-    
-    form {
-      display: flex;
-
-      input {
-        flex: 1;
-      }
-    }
-  }
+  box-shadow: 0 0 10px 0px rgba(0, 0, 0, .5);
 }
 </style>
