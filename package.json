@@ -1,0 +1,16 @@
+{
+  "name": "chat-widget",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "setup": "npm i --workspaces"
+  },
+  "author": "Harry Maynard",
+  "license": "MIT",
+  "workspaces": [
+    "common",
+    "backend",
+    "frontend"
+  ]
+}

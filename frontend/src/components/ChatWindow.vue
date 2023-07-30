@@ -15,7 +15,7 @@ onMounted(() => {
   try {
     webSocketClientService.connect()
   } catch (error) {
-    console.log('failed to connect', error)
+    console.error('failed to connect', error)
   }
 })
 
@@ -39,8 +39,7 @@ const handleKeypressMessageInput = (event: KeyboardEvent) => {
 }
 
 const sendMessage = () => {
-  // TODO: Send message.
-
+  webSocketClientService.sendMessage(messageInputText.value)
   messageInputText.value = ''
 }
 </script>
