@@ -1,14 +1,19 @@
-import { type Socket, io } from 'socket.io-client'
+import { type Socket, Manager } from 'socket.io-client'
+
+const SOCKET_API_ENDPOINT: string = '/api/socket'
 
 export class WebSocketClientService {
   public socket: Socket | null = null
+  private socketManager: Manager | null = null
 
   public async connect() {
-    this.socket = io('ws://localhost:8080', {
-      path: '/api/socket',
+    this.socketManager = new Manager('ws://localhost:8080', {
+      path: SOCKET_API_ENDPOINT,
       transports: ['websocket'],
       reconnectionDelayMax: 10000,
+      autoConnect: false,
     })
+    this.socket = this.socketManager.socket('/')
 
     this.socket.on('connect', () => {
       console.log('connected to websocket endpoint')
@@ -22,6 +27,17 @@ export class WebSocketClientService {
         this.socket?.connect()
       }
       // else the socket will automatically try to reconnect
+    })
+
+    return new Promise((resolve, reject) => {
+      this.socketManager?.connect((error) => {
+        if (error) {
+          reject()
+        } else {
+          this.socket?.connect()
+          resolve(null)
+        }
+      })
     })
   }
 

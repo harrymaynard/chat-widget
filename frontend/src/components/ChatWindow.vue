@@ -12,7 +12,11 @@ const webSocketClientService = useWebSocketClientService()
 const messageInputText = ref<string>('')
 
 onMounted(() => {
-  webSocketClientService.connect()
+  try {
+    webSocketClientService.connect()
+  } catch (error) {
+    console.log('failed to connect', error)
+  }
 })
 
 onBeforeUnmount(() => {
