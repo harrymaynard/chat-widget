@@ -1,12 +1,23 @@
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref, onMounted, onBeforeUnmount } from 'vue'
+import { useWebSocketClientService } from '@/services/WebSocketClientService'
 import IconDash from '@/components/icons/IconDash.vue'
 
 const emit = defineEmits<{
   (eventName: 'close'): void,
 }>()
 
+const webSocketClientService = useWebSocketClientService()
+
 const messageInputText = ref<string>('')
+
+onMounted(() => {
+  webSocketClientService.connect()
+})
+
+onBeforeUnmount(() => {
+  webSocketClientService.disconnect()
+})
 
 const handleClickCloseChat = () => {
   emit('close')

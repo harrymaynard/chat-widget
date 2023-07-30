@@ -6,7 +6,9 @@ export default class WebSocketService {
   constructor() {}
 
   public async start(httpServer: any) {
-    this.io = new Server(httpServer)
+    this.io = new Server(httpServer, {
+      path: '/api/socket',
+    })
 
     this.io.on('connection', (socket: Socket) => {
       console.log('a user connected')
