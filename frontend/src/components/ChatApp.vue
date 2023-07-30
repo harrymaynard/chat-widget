@@ -23,14 +23,16 @@ const handleCloseChatWindow = () => {
     >
       <IconChat class="icon" />
     </a>
-    <div
-      v-if="isChatOpen"
-      class="chat-container"
-    >
-      <ChatWindow
-        @close="handleCloseChatWindow"
-      />
-    </div>
+    <TransitionGroup name="chat-window">
+      <div
+        v-if="isChatOpen"
+        class="chat-container"
+      >
+        <ChatWindow
+          @close="handleCloseChatWindow"
+        />
+      </div>
+    </TransitionGroup>
   </div>
 </template>
 

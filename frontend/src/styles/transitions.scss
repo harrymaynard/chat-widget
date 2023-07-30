@@ -1,0 +1,10 @@
+.chat-window-enter-active,
+.chat-window-leave-active {
+  transition: all 0.5s ease;
+  transform-origin: bottom right;
+}
+.chat-window-enter-from,
+.chat-window-leave-to {
+  opacity: 0;
+  transform: scale(0);
+}
