@@ -15,17 +15,20 @@ const messageInputText = ref<string>('')
 onMounted(async () => {
   try {
     await webSocketClientService.connect()
-    webSocketClientService.on('message', (message: IMessage) => {
-      console.log('message mounted', message)
-    })
+    webSocketClientService.on('message', handleReceiveMessage)
   } catch (error) {
     console.error('failed to connect', error)
   }
 })
 
 onBeforeUnmount(() => {
+  webSocketClientService.off('message', handleReceiveMessage)
   webSocketClientService.disconnect()
 })
+
+const handleReceiveMessage = (message: IMessage) => {
+  console.log('message mounted', message)
+}
 
 const handleClickCloseChat = () => {
   emit('close')
