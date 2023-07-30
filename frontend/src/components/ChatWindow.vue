@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { useWebSocketClientService } from '@/services/WebSocketClientService'
+import { type IMessage } from '@/interfaces/IMessage'
 import IconDash from '@/components/icons/IconDash.vue'
 
 const emit = defineEmits<{
@@ -11,9 +12,12 @@ const webSocketClientService = useWebSocketClientService()
 
 const messageInputText = ref<string>('')
 
-onMounted(() => {
+onMounted(async () => {
   try {
-    webSocketClientService.connect()
+    await webSocketClientService.connect()
+    webSocketClientService.on('message', (message: IMessage) => {
+      console.log('message mounted', message)
+    })
   } catch (error) {
     console.error('failed to connect', error)
   }

@@ -1,9 +1,15 @@
 import { type Socket, Manager } from 'socket.io-client'
+import { EventEmitter, Listener } from 'events'
 import { type IMessage } from '@/interfaces/IMessage'
 
 export class WebSocketClientService {
+  public eventEmitter: EventEmitter
   public socket: Socket | null = null
   private socketManager: Manager | null = null
+  
+  constructor() {
+    this.eventEmitter = new EventEmitter()
+  }
 
   public async connect(): Promise<void> {
     this.socketManager = new Manager('ws://localhost:8080', {
@@ -22,7 +28,13 @@ export class WebSocketClientService {
           reject()
         } else {
           this.socket?.connect()
-          resolve()
+
+          const connectionCompleteHandler = () => {
+            this.socket?.off('connect', connectionCompleteHandler)  
+            resolve()
+          }
+          this.socket?.on('connect', connectionCompleteHandler)
+          
         }
       })
     })
@@ -35,11 +47,13 @@ export class WebSocketClientService {
   private attachListeners(socket: Socket) {
     // Listen for connection event.
     socket.on('connect', () => {
+      this.eventEmitter.emit('connect')
       console.log('connected to websocket endpoint')
     })
 
     // Listen for websocket disconnect events.
     socket.on('disconnect', (reason: string) => {
+      this.eventEmitter.emit('disconnect')
       console.log('disconnected from websocket endpoint')
 
       if (reason === 'io server disconnect') {
@@ -50,13 +64,22 @@ export class WebSocketClientService {
     })
 
     // Listen for chat messages.
-    socket.on('message', (message: IMessage) => {
-      console.log('hello from server:', message)
+    socket.on('message', (message: IMessage, callback: () => void) => {
+      callback()
+      this.eventEmitter.emit('message', message)
     })
   }
 
-  public sendMessage(text: string) {
-    this.socket?.emit('message', { text })
+  public async sendMessage(text: string) {
+    await this.socket?.emitWithAck('message', { text })
+  }
+
+  public on(eventName: string, callback: Listener) {
+    this.eventEmitter.on(eventName, callback)
+  }
+
+  public off(eventName: string, callback: Listener) {
+    this.eventEmitter.off(eventName, callback)
   }
 }
 

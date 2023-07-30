@@ -3,11 +3,11 @@ import { formatISODateTime } from 'common/src/helpers/DateHelper'
 import LogService from './LogService'
 
 export default class WebSocketService {
-  private io: any
+  private io: Server | null = null
 
   constructor() {}
 
-  public async start(httpServer: any) {
+  public async start(httpServer: any): Promise<void> {
     this.io = new Server(httpServer, {
       path: '/api/socket',
     })
@@ -15,14 +15,28 @@ export default class WebSocketService {
     this.io.on('connection', (socket: Socket) => {
       LogService.info('User connected')
       
-      socket.on('message', (message: any) => {
-        socket.emit('message', {
+      socket.on('message', async (message: any, callback: Function) => {
+        await socket.emitWithAck('message', {
           text: message.text,
-          time: formatISODateTime(new Date())
+          time: formatISODateTime(new Date()),
+          username: 'Server'
         })
+        callback()
+      })
+    })
+
+    return Promise.resolve()
+  }
+
+  public async stop(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.io?.close((error) => {
+        if (error) {
+          reject()
+        } else {
+          resolve()
+        }
       })
     })
   }
-
-  public async stop() {}
 }
