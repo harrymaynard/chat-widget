@@ -1,10 +1,10 @@
 {
   "name": "chat-widget",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Chat widget and customer portal",
   "scripts": {
-    "setup": "npm i --workspaces"
+    "setup": "npm i --workspaces",
+    "build": "npm run build --workspaces --if-present"
   },
   "author": "Harry Maynard",
   "license": "MIT",

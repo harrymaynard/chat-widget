@@ -11,5 +11,13 @@
   "license": "MIT",
   "dependencies": {
     "date-fns": "^2.30.0"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^6.2.0",
+    "@typescript-eslint/parser": "^6.2.0",
+    "eslint": "^8.46.0",
+    "typescript": "^5.1.6",
+    "vite-plugin-eslint": "^1.8.1",
+    "vue-eslint-parser": "^9.3.1"
   }
 }
