@@ -1,6 +1,7 @@
 import { Server, type Socket } from 'socket.io'
 import { formatISODateTime } from 'common/helpers/DateHelper'
 import LogService from './LogService'
+import IMessage from 'common/interfaces/IMessage'
 
 export default class WebSocketService {
   private io: Server | null = null
@@ -15,11 +16,11 @@ export default class WebSocketService {
     this.io.on('connection', (socket: Socket) => {
       LogService.info('User connected')
       
-      socket.on('message', async (message: any, callback: Function) => {
+      socket.on('message', async (message: IMessage, callback: Function) => {
         await socket.emitWithAck('message', {
           text: message.text,
           time: formatISODateTime(new Date()),
-          username: 'Server'
+          username: message.username
         })
         callback()
       })

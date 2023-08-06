@@ -12,7 +12,7 @@ const props = defineProps({
 </script>
 
 <template>
-  <div>
+  <div class="chat-conversation">
     <template
       v-for="(message, index) in props.messages"
       :key="index"
@@ -21,3 +21,9 @@ const props = defineProps({
     </template>
   </div>
 </template>
+
+<style lang="scss" scoped>
+.chat-conversation {
+  padding: 10px;
+}
+</style>

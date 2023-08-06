@@ -43,7 +43,7 @@ const handleCloseChatWindow = () => {
 }
 
 const handleSendMessage = (message: IMessage) => {
-  webSocketClientService.sendMessage(message.text)
+  webSocketClientService.sendMessage(message)
 }
 </script>
 

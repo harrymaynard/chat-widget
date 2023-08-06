@@ -70,8 +70,8 @@ export class WebSocketClientService {
     })
   }
 
-  public async sendMessage(text: string) {
-    await this.socket?.emitWithAck('message', { text })
+  public async sendMessage(message: IMessage) {
+    await this.socket?.emitWithAck('message', message)
   }
 
   public on(eventName: string, callback: Listener) {
