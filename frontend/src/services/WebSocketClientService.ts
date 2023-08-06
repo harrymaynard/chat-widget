@@ -1,6 +1,6 @@
 import { type Socket, Manager } from 'socket.io-client'
 import { EventEmitter, Listener } from 'events'
-import { type IMessage } from '@/interfaces/IMessage'
+import type IMessage from 'common/interfaces/IMessage'
 
 export class WebSocketClientService {
   public eventEmitter: EventEmitter

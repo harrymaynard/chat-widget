@@ -1,9 +1,38 @@
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref, watch, onBeforeUnmount } from 'vue'
+import { useStore } from '@/store/Store'
+import { useWebSocketClientService } from '@/services/WebSocketClientService'
+import type IMessage from 'common/interfaces/IMessage'
 import IconChat from '@/components/icons/IconChat.vue'
 import ChatWindow from '@/components/ChatWindow.vue'
 
+const store = useStore()
+const webSocketClientService = useWebSocketClientService()
+
 const isChatOpen = ref<boolean>(false)
+const isChatConnected = ref<boolean>(false)
+
+onBeforeUnmount(() => {
+  webSocketClientService.off('message', handleReceiveMessage)
+  webSocketClientService.disconnect()
+})
+
+watch(isChatOpen, async (newValue) => {
+  if (newValue && !isChatConnected.value) {
+    try {
+      await webSocketClientService.connect()
+      webSocketClientService.on('message', handleReceiveMessage)
+      isChatConnected.value = true
+    } catch (error) {
+      console.error('failed to connect', error)
+    }
+  }
+})
+
+const handleReceiveMessage = (message: IMessage) => {
+  console.log('message received', message)
+  store.messages.push(message)
+}
 
 const handleClickChatIcon = () => {
   isChatOpen.value = !isChatOpen.value
@@ -11,6 +40,10 @@ const handleClickChatIcon = () => {
 
 const handleCloseChatWindow = () => {
   isChatOpen.value = false
+}
+
+const handleSendMessage = (message: IMessage) => {
+  webSocketClientService.sendMessage(message.text)
 }
 </script>
 
@@ -30,6 +63,7 @@ const handleCloseChatWindow = () => {
       >
         <ChatWindow
           @close="handleCloseChatWindow"
+          @sendMessage="handleSendMessage"
         />
       </div>
     </TransitionGroup>

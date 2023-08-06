@@ -8,11 +8,10 @@
     "esModuleInterop": true,
     "moduleResolution": "node",
     "resolveJsonModule": true,
-    "strict": true, 
+    "strict": true
   },
   "include": [
     "src/**/*.ts",
-    "**/*.vue"
-  ],
-  "exclude": ["node_modules"]
+    "src/**/*.vue"
+  ]
 }

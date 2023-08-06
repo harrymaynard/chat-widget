@@ -1,35 +1,18 @@
 <script lang="ts" setup>
-import { ref, onMounted, onBeforeUnmount } from 'vue'
-import { useWebSocketClientService } from '@/services/WebSocketClientService'
-import { type IMessage } from '@/interfaces/IMessage'
+import { ref } from 'vue'
+import { useStore } from '@/store/Store'
+import type IMessage from 'common/interfaces/IMessage'
 import IconDash from '@/components/icons/IconDash.vue'
 import ChatConversation from 'common/components/ChatConversation.vue'
 
 const emit = defineEmits<{
   (eventName: 'close'): void,
+  (eventName: 'sendMessage', message: IMessage): void,
 }>()
 
-const webSocketClientService = useWebSocketClientService()
+const store = useStore()
 
 const messageInputText = ref<string>('')
-
-onMounted(async () => {
-  try {
-    await webSocketClientService.connect()
-    webSocketClientService.on('message', handleReceiveMessage)
-  } catch (error) {
-    console.error('failed to connect', error)
-  }
-})
-
-onBeforeUnmount(() => {
-  webSocketClientService.off('message', handleReceiveMessage)
-  webSocketClientService.disconnect()
-})
-
-const handleReceiveMessage = (message: IMessage) => {
-  console.log('message mounted', message)
-}
 
 const handleClickCloseChat = () => {
   emit('close')
@@ -47,7 +30,11 @@ const handleKeypressMessageInput = (event: KeyboardEvent) => {
 }
 
 const sendMessage = () => {
-  webSocketClientService.sendMessage(messageInputText.value)
+  emit('sendMessage', {
+    text: messageInputText.value,
+    time: new Date(),
+    username: 'user'
+  })
   messageInputText.value = ''
 }
 </script>
@@ -64,7 +51,7 @@ const sendMessage = () => {
     </a>
   </div>
   <div class="chat-body">
-    <ChatConversation/>
+    <ChatConversation :messages="store.messages"/>
   </div>
   <div class="chat-footer">
     <form @submit.prevent="handleSubmitMessage">
