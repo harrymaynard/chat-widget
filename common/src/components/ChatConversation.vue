@@ -64,5 +64,8 @@ const scrollToLatestMessage = () => {
   right: 0;
   overflow-y: scroll;
   padding: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
 }
 </style>
