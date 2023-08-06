@@ -24,6 +24,7 @@ module.exports = {
     'no-console': 'off',
     'no-debugger': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
+    '@typescript-eslint/no-unused-vars': 'off',
   },
   overrides: [
     {

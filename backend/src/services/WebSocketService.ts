@@ -22,6 +22,11 @@ export default class WebSocketService {
           time: formatISODateTime(new Date()),
           username: message.username
         })
+        await socket.emitWithAck('message', {
+          text: 'Server message',
+          time: formatISODateTime(new Date()),
+          username: 'server'
+        })
         callback()
       })
     })

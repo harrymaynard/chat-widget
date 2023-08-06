@@ -12,7 +12,7 @@ export class WebSocketClientService {
   }
 
   public async connect(): Promise<void> {
-    this.socketManager = new Manager('ws://localhost:8080', {
+    this.socketManager = new Manager({
       path: '/api/socket',
       transports: ['websocket'],
       reconnectionDelayMax: 10000,

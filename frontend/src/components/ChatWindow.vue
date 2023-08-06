@@ -85,6 +85,7 @@ const sendMessage = () => {
 }
 .chat-body {
   flex: 1;
+  position: relative;
 }
 .chat-footer {
   background: $theme-color-primary;
