@@ -1,5 +1,5 @@
 import { Server, type Socket } from 'socket.io'
-import { formatISODateTime } from 'common/src/helpers/DateHelper'
+import { formatISODateTime } from 'common/helpers/DateHelper'
 import LogService from './LogService'
 
 export default class WebSocketService {

@@ -1,4 +1,5 @@
 {
+  "extends": "../tsconfig.json",
   "compilerOptions": {
     "target": "esnext",
     "module": "esnext",
@@ -12,12 +13,9 @@
     "useDefineForClassFields": true,
     "noImplicitAny": false,
     "sourceMap": true,
-    "baseUrl": ".",
-    "types": [],
     "paths": {
-      "@/*": [
-        "src/*"
-      ]
+      "@/*": ["frontend/src/*"],
+      "common/*": ["common/src/*"]
     },
     "lib": [
       "esnext",
@@ -29,11 +27,8 @@
   "include": [
     "src/**/*.ts",
     "src/**/*.tsx",
-    "src/**/*.vue",
+    "**/*.vue",
     "tests/**/*.ts",
     "tests/**/*.tsx"
-  ],
-  "exclude": [
-    "node_modules"
   ]
 }

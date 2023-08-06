@@ -1,9 +1,8 @@
 {
+  "extends": "../tsconfig.json",
   "compilerOptions": {
     "target": "es2018",
     "module": "es2020",
-    "baseUrl": ".",
-    "outDir": "dist",
     "sourceMap": true,
     "allowJs": true,
     "esModuleInterop": true,
@@ -12,11 +11,8 @@
     "strict": true, 
   },
   "include": [
-    "./src"
+    "src/**/*.ts",
+    "**/*.vue"
   ],
-  "exclude": ["node_modules"],
-  "ts-node": {
-    "esm": true,
-    "experimentalSpecifierResolution": "node"
-  }
+  "exclude": ["node_modules"]
 }

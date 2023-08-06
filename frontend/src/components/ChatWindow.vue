@@ -3,7 +3,7 @@ import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { useWebSocketClientService } from '@/services/WebSocketClientService'
 import { type IMessage } from '@/interfaces/IMessage'
 import IconDash from '@/components/icons/IconDash.vue'
-import { ChatConversation } from 'common'
+import ChatConversation from 'common/components/ChatConversation.vue'
 
 const emit = defineEmits<{
   (eventName: 'close'): void,

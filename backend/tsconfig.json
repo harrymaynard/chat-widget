@@ -1,22 +1,18 @@
 {
+  "extends": "../tsconfig.json",
   "compilerOptions": {
     "target": "es2018",
     "module": "es2020",
-    "outDir": "dist",
     "sourceMap": true,
     "allowJs": true,
     "esModuleInterop": true,
     "moduleResolution": "node",
     "resolveJsonModule": true,
-    "strict": true, 
+    "strict": true
   },
   "include": [
     "./src",
     "index.ts"
   ],
-  "exclude": ["node_modules"],
-  "ts-node": {
-    "esm": true,
-    "experimentalSpecifierResolution": "node"
-  }
+  "exclude": ["node_modules"]
 }
