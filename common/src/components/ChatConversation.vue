@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { type PropType } from 'vue'
 import type IMessage from '../interfaces/IMessage'
+import ChatMessage from './ChatMessage.vue'
 
 const props = defineProps({
   messages: {
@@ -12,11 +13,11 @@ const props = defineProps({
 
 <template>
   <div>
-    <div
+    <template
       v-for="(message, index) in props.messages"
       :key="index"
     >
-      {{ message }}
-    </div>
+      <ChatMessage :message="message"/>
+    </template>
   </div>
 </template>
