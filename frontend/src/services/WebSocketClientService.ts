@@ -1,5 +1,5 @@
 import { type Socket, Manager } from 'socket.io-client'
-import { EventEmitter, Listener } from 'events'
+import { EventEmitter } from 'events'
 import type IMessage from 'common/interfaces/IMessage'
 
 export class WebSocketClientService {
@@ -74,11 +74,11 @@ export class WebSocketClientService {
     await this.socket?.emitWithAck('message', message)
   }
 
-  public on(eventName: string, callback: Listener) {
+  public on(eventName: string, callback: (...args: any[]) => void) {
     this.eventEmitter.on(eventName, callback)
   }
 
-  public off(eventName: string, callback: Listener) {
+  public off(eventName: string, callback: (...args: any[]) => void) {
     this.eventEmitter.off(eventName, callback)
   }
 }
