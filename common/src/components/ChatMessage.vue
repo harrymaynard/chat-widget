@@ -59,10 +59,14 @@ const componentClassNames = computed(() => {
   }
 
   &.user {
+    margin-left: 30px;
     .message {
       background: rgb(27, 104, 140);
       color: #FFF;
     }
+  }
+  &:not(.user) {
+    margin-right: 30px;
   }
 }
 </style>
