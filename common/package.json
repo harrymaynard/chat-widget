@@ -7,7 +7,8 @@
   "exports": {
     "./components/*": "./src/components/*",
     "./helpers/*": "./src/helpers/*.ts",
-    "./interfaces/*": "./src/interfaces/*.ts"
+    "./interfaces/*": "./src/interfaces/*.ts",
+    "./services/*": "./src/services/*.ts"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -16,9 +17,12 @@
   "license": "MIT",
   "dependencies": {
     "date-fns": "^2.30.0",
+    "events": "^3.3.0",
+    "socket.io-client": "^4.7.2",
     "vue": "^3.3.4"
   },
   "devDependencies": {
+    "@types/events": "^3.0.0",
     "@typescript-eslint/eslint-plugin": "^6.2.0",
     "@typescript-eslint/parser": "^6.2.0",
     "eslint": "^8.46.0",

@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { ref, watch, onBeforeUnmount } from 'vue'
 import { useStore } from '@/store/Store'
-import { useWebSocketClientService } from '@/services/WebSocketClientService'
+import { useWebSocketClientService } from 'common/services/WebSocketClientService'
 import type IMessage from 'common/interfaces/IMessage'
 import IconChat from '@/components/icons/IconChat.vue'
 import ChatWindow from '@/components/ChatWindow.vue'

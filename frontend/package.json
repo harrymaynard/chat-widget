@@ -20,13 +20,10 @@
   },
   "homepage": "https://github.com/harrymaynard/chat-widget#readme",
   "dependencies": {
-    "events": "^3.3.0",
     "pinia": "^2.1.6",
-    "socket.io-client": "^4.7.1",
     "vue": "^3.3.4"
   },
   "devDependencies": {
-    "@types/events": "^3.0.0",
     "@typescript-eslint/eslint-plugin": "^6.2.0",
     "@typescript-eslint/parser": "^6.2.0",
     "@vitejs/plugin-vue": "^4.2.3",
