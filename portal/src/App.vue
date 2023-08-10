@@ -1,19 +1,18 @@
 <script lang="ts" setup>
-import SideBar from '@/components/SideBar.vue'
-
-const currentYear = new Date().getFullYear()
+import AppHeader from '@/components/AppHeader.vue'
+import AppFooter from '@/components/AppFooter.vue'
 </script>
 
 <template>
   <div class="page">
     <header>
-      <h1>Admin Portal</h1>
+      <AppHeader/>
     </header>
     <main>
       <RouterView/>
     </main>
     <footer>
-      &copy; {{ currentYear }} Harry Maynard
+      <AppFooter/>
     </footer>
   </div>
 </template>
@@ -25,18 +24,9 @@ const currentYear = new Date().getFullYear()
   display: flex;
   flex-direction: column;
 
-  .content {
-    padding: 20px;
-    border: solid thin #CCC;
-    background: #EEE;
-  }
   main {
     flex: 1;
     display: flex;
-  }
-  footer {
-    padding: 20px;
-    color: #888;
   }
 }
 </style>
