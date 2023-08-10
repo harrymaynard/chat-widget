@@ -4,11 +4,11 @@ import AppFooter from '@/components/AppFooter.vue'
 </script>
 
 <template>
-  <div class="page">
+  <div class="page d-flex flex-column">
     <header>
       <AppHeader/>
     </header>
-    <main>
+    <main class="flex-fill d-flex">
       <RouterView/>
     </main>
     <footer>
@@ -21,12 +21,5 @@ import AppFooter from '@/components/AppFooter.vue'
 .page {
   width: 100vw;
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-
-  main {
-    flex: 1;
-    display: flex;
-  }
 }
 </style>

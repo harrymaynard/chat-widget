@@ -3,9 +3,9 @@
 </script>
 
 <template>
-  <div>
+  <div class="p-4">
     <h2>Chat Sessions</h2>
-    <table border="1">
+    <table class="table table-striped table-bordered">
       <thead>
         <tr>
           <th>Session ID</th>
