@@ -14,7 +14,7 @@
     "noImplicitAny": false,
     "sourceMap": true,
     "paths": {
-      "@/*": ["frontend/src/*"],
+      "@/*": ["portal/src/*"],
       "common/*": ["common/src/*"]
     },
     "lib": [
@@ -27,7 +27,7 @@
   "include": [
     "src/**/*.ts",
     "src/**/*.tsx",
-    "**/*.vue",
+    "src/**/*.vue",
     "tests/**/*.ts",
     "tests/**/*.tsx"
   ]
