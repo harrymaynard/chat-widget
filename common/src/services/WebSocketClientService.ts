@@ -2,18 +2,26 @@ import { type Socket, Manager } from 'socket.io-client'
 import { EventEmitter } from 'events'
 import type IMessage from '../interfaces/IMessage'
 
+interface IConfig {
+  path?: string
+}
+
+const DEFAULT_PATH: string = '/api/socket'
+
 export class WebSocketClientService {
   public eventEmitter: EventEmitter
   public socket: Socket | null = null
   private socketManager: Manager | null = null
+  private path: string
   
-  constructor() {
+  constructor(config: IConfig = {}) {
     this.eventEmitter = new EventEmitter()
+    this.path = typeof config.path === 'string' ? config.path : DEFAULT_PATH
   }
 
   public async connect(): Promise<void> {
     this.socketManager = new Manager({
-      path: '/api/socket',
+      path: this.path,
       transports: ['websocket'],
       reconnectionDelayMax: 10000,
       autoConnect: false,
@@ -27,14 +35,12 @@ export class WebSocketClientService {
         if (error) {
           reject()
         } else {
-          this.socket?.connect()
-
           const connectionCompleteHandler = () => {
             this.socket?.off('connect', connectionCompleteHandler)  
             resolve()
           }
           this.socket?.on('connect', connectionCompleteHandler)
-          
+          this.socket?.connect()
         }
       })
     })
@@ -74,20 +80,20 @@ export class WebSocketClientService {
     await this.socket?.emitWithAck('message', message)
   }
 
-  public on(eventName: string, callback: (...args: any[]) => void) {
+  public on(eventName: string, callback: (...args: any[]) => void): void {
     this.eventEmitter.on(eventName, callback)
   }
 
-  public off(eventName: string, callback: (...args: any[]) => void) {
+  public off(eventName: string, callback: (...args: any[]) => void): void {
     this.eventEmitter.off(eventName, callback)
   }
 }
 
 let service: WebSocketClientService
 
-export const useWebSocketClientService = (): WebSocketClientService => {
+export const useWebSocketClientService = (config: IConfig = {}): WebSocketClientService => {
   if (!service) {
-    service = new WebSocketClientService()
+    service = new WebSocketClientService(config)
   }
   return service
 }
