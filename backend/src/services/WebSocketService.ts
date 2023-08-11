@@ -29,23 +29,18 @@ export default class WebSocketService {
       LogService.info('User connected')
       
       socket.on('message', async (message: IMessage, callback: Function) => {
-        await socket.emitWithAck('message', {
+        this.emitter?.emit('message', {
           text: message.text,
           time: formatISODateTime(new Date()),
           username: message.username
         })
-        await socket.emitWithAck('message', {
-          text: 'Server message',
-          time: formatISODateTime(new Date()),
-          username: 'server'
-        })
         callback()
       })
-    })
 
-    this.pingTimer = setInterval(() => {
-      this.emitter?.emit('ping', formatISODateTime(new Date()))
-    }, 3000)
+      setInterval(() => {
+        socket.emit('ping', formatISODateTime(new Date()))
+      }, 5000)
+    })
 
     return Promise.resolve()
   }
