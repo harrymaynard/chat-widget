@@ -14,6 +14,7 @@ interface WebSocketEventTypes {
 export default class WebSocketService {
   private io: Server | null = null
   private emitter: Emitter | null = null
+  private pingTimer: any
 
   constructor() {}
 
@@ -42,10 +43,16 @@ export default class WebSocketService {
       })
     })
 
+    this.pingTimer = setInterval(() => {
+      this.emitter?.emit('ping', formatISODateTime(new Date()))
+    }, 3000)
+
     return Promise.resolve()
   }
 
   public async stop(): Promise<void> {
+    clearInterval(this.pingTimer)
+
     return new Promise((resolve, reject) => {
       this.io?.close((error) => {
         if (error) {
@@ -59,7 +66,8 @@ export default class WebSocketService {
 
   private async initRedisConnection() {
     const pubClient = createClient({
-      url: 'redis://user:pass@localhost:6379'
+      url: 'redis://localhost:6379' // No auth.
+      // url: 'redis://user:pass@localhost:6379' // With auth.
     })
     const subClient = pubClient.duplicate()
 
@@ -67,16 +75,13 @@ export default class WebSocketService {
       await Promise.all([
         pubClient.connect(),
         subClient.connect()
-      ]).then(() => {
-        // Create and setup Redis adapter.
-        this.io?.adapter(createAdapter(pubClient, subClient))
-        
-        // Setup emitter.
-        this.emitter = new Emitter<WebSocketEventTypes>(pubClient)
-        setInterval(() => {
-          this.emitter?.emit('time', new Date())
-        }, 5000)
-      })
+      ])
+      
+      // Create and setup Redis adapter.
+      this.io?.adapter(createAdapter(pubClient, subClient))
+      
+      // Setup emitter.
+      this.emitter = new Emitter<WebSocketEventTypes>(pubClient)
     } catch (error) {
       LogService.error('Failed to connect to Redis server')
     }

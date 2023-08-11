@@ -71,8 +71,18 @@ export class WebSocketClientService {
 
     // Listen for chat messages.
     socket.on('message', (message: IMessage, callback: () => void) => {
-      callback()
+      if (callback) {
+        callback()
+      }
       this.eventEmitter.emit('message', message)
+    })
+
+    // Listen for chat messages.
+    socket.on('ping', (time: string, callback: () => void) => {
+      if (typeof callback === 'function') {
+        callback()
+      }
+      this.eventEmitter.emit('ping', time)
     })
   }
 
