@@ -30,9 +30,10 @@ export default class WebSocketService {
       
       socket.on('message', async (message: IMessage, callback: Function) => {
         this.emitter?.emit('message', {
+          chatId: message.chatId,
           text: message.text,
           time: formatISODateTime(new Date()),
-          username: message.username
+          username: message.username,
         })
         callback()
       })

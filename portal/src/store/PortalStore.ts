@@ -20,10 +20,21 @@ const initialMessages: Array<IMessage> = [
   { text: 'message content here', time: new Date(), username: 'user' },
 ]
 
-export const useStore = defineStore('chat-widget', () => {
-  const messages = ref<Array<IMessage>>(initialMessages)
+export const usePortalStore = defineStore('chat-widget', () => {
+  const chats = ref<Map<string, Array<IMessage>>>(new Map())
+  chats.value.set('1', initialMessages)
   
+  const addMessageByChatId = (chatId: string, message: IMessage): void => {
+    chats.value.get(chatId)?.push(message)
+  }
+
+  const getMessagesByChatId = (chatId: string): Array<IMessage> => {
+    return chats.value.get(chatId) || []
+  }
+
   return {
-    messages,
+    chats,
+    addMessageByChatId,
+    getMessagesByChatId,
   }
 })

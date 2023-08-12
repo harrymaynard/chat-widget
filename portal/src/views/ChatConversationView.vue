@@ -1,9 +1,28 @@
 <script lang="ts" setup>
+import { ref, onMounted, onBeforeUnmount } from 'vue'
+import { useRouter } from 'vue-router'
+import { usePortalStore } from '@/store/PortalStore'
+import { useWebSocketClientService } from 'common/services/WebSocketClientService'
+import { formatISODateTime } from 'common/helpers/DateHelper'
 import SideBar from '@/components/SideBar.vue'
 import ChatConversation from 'common/components/ChatConversation.vue'
 
+const router = useRouter()
+const store = usePortalStore()
+const webSocketClientService = useWebSocketClientService()
+
+const chatId: string = router.currentRoute.value.params.chatId as string
+const messageInputText = ref<string>('')
+
 const handleSubmitSendMessage = () => {
   console.log('send message')
+
+  webSocketClientService.sendMessage({
+    text: messageInputText.value,
+    time: formatISODateTime(new Date()),
+    username: 'admin',
+    chatId,
+  })
 }
 </script>
 
@@ -14,7 +33,7 @@ const handleSubmitSendMessage = () => {
     </div>
     <div class="flex-fill d-flex flex-column">
       <div class="flex-fill position-relative">
-        <ChatConversation/>
+        <ChatConversation :messages="store.getMessagesByChatId(chatId)"/>
       </div>
       <div class="m-3">
         <form
@@ -23,6 +42,7 @@ const handleSubmitSendMessage = () => {
         >
           <input
             class="form-control flex-fill"
+            v-model="messageInputText"
           />
           <button
             type="submit"
