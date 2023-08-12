@@ -15,8 +15,10 @@ const chatId: string = router.currentRoute.value.params.chatId as string
 const messageInputText = ref<string>('')
 
 const handleSubmitSendMessage = () => {
-  console.log('send message')
-
+  if (!messageInputText.value) {
+    return
+  }
+  
   webSocketClientService.sendMessage({
     text: messageInputText.value,
     time: formatISODateTime(new Date()),
