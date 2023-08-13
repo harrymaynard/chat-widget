@@ -11,6 +11,7 @@ Install project dependencies:
 npm run setup
 ```
 
+## Running Locally
 Run back-end:
 ```bash
 cd backend/

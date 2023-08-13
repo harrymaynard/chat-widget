@@ -3,28 +3,34 @@ import { defineStore } from 'pinia'
 import type IMessage from 'common/interfaces/IMessage'
 
 const initialMessages: Array<IMessage> = [
-  { text: 'message content here', time: new Date(), username: 'user' },
-  { text: 'message content here', time: new Date(), username: 'user' },
-  { text: 'message content here', time: new Date(), username: 'user' },
-  { text: 'message content here', time: new Date(), username: 'user' },
-  { text: 'message content here', time: new Date(), username: 'user' },
-  { text: 'message content here', time: new Date(), username: 'user' },
-  { text: 'message content here', time: new Date(), username: 'server' },
-  { text: 'message content here', time: new Date(), username: 'user' },
-  { text: 'message content here', time: new Date(), username: 'user' },
-  { text: 'message content here', time: new Date(), username: 'user' },
-  { text: 'message content here', time: new Date(), username: 'user' },
-  { text: 'message content here', time: new Date(), username: 'user' },
-  { text: 'message content here', time: new Date(), username: 'user' },
-  { text: 'message content here', time: new Date(), username: 'user' },
-  { text: 'message content here', time: new Date(), username: 'user' },
+  { chatId: '1', text: 'message content here', time: new Date(), username: 'user' },
+  { chatId: '1', text: 'message content here', time: new Date(), username: 'user' },
+  { chatId: '1', text: 'message content here', time: new Date(), username: 'user' },
+  { chatId: '1', text: 'message content here', time: new Date(), username: 'user' },
+  { chatId: '1', text: 'message content here', time: new Date(), username: 'user' },
+  { chatId: '1', text: 'message content here', time: new Date(), username: 'user' },
+  { chatId: '1', text: 'message content here', time: new Date(), username: 'server' },
+  { chatId: '1', text: 'message content here', time: new Date(), username: 'user' },
+  { chatId: '1', text: 'message content here', time: new Date(), username: 'user' },
+  { chatId: '1', text: 'message content here', time: new Date(), username: 'user' },
+  { chatId: '1', text: 'message content here', time: new Date(), username: 'user' },
+  { chatId: '1', text: 'message content here', time: new Date(), username: 'user' },
+  { chatId: '1', text: 'message content here', time: new Date(), username: 'user' },
+  { chatId: '1', text: 'message content here', time: new Date(), username: 'user' },
+  { chatId: '1', text: 'message content here', time: new Date(), username: 'user' },
 ]
 
-export const usePortalStore = defineStore('chat-widget', () => {
+export const usePortalStore = defineStore('chat-portal', () => {
   const chats = ref<Map<string, Array<IMessage>>>(new Map())
-  chats.value.set('1', initialMessages)
+
+  if (process.env.NODE_ENV === 'development') {
+    chats.value.set('1', initialMessages)
+  }
   
   const addMessageByChatId = (chatId: string, message: IMessage): void => {
+    if (!chats.value.get(chatId)) {
+      chats.value.set(chatId, [])
+    }
     chats.value.get(chatId)?.push(message)
   }
 
@@ -33,7 +39,6 @@ export const usePortalStore = defineStore('chat-widget', () => {
   }
 
   return {
-    chats,
     addMessageByChatId,
     getMessagesByChatId,
   }

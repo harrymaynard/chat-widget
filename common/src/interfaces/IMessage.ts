@@ -1,7 +1,7 @@
 export default interface IMessage {
+  chatId: string
   text: string
   time: string | Date
   username: string
-  chatId?: string
   isRead?: boolean
 }
