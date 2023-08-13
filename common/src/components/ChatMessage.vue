@@ -2,18 +2,27 @@
 import { type PropType, computed } from 'vue'
 import type IMessage from '../interfaces/IMessage'
 import { formatISODateTime } from '../helpers/DateHelper'
+import UserType from '../enums/UserType'
 
 const props = defineProps({
   message: {
     type: Object as PropType<IMessage>,
     default: null,
   },
+  userId: {
+    type: String,
+    default: null,
+  },
+  userType: {
+    type: String as PropType<UserType>,
+    default: UserType.Member,
+  }
 })
 
 const componentClassNames = computed(() => {
   let classNames = 'chat-message'
 
-  if (props.message?.username === 'user') {
+  if (props.message?.userId === props.userId) {
     classNames += ' user'
   }
 
@@ -24,7 +33,7 @@ const componentClassNames = computed(() => {
 <template>
   <div :class="componentClassNames">
     <div class="info">
-      <span>{{ props.message?.username }}</span>
+      <span>{{ props.message?.name }}</span>
       <span class="time"> ({{ formatISODateTime(props.message?.time) }})</span>
     </div>
     <div class="message">

@@ -4,11 +4,12 @@ import { Emitter } from '@socket.io/redis-emitter'
 import { createClient } from 'redis'
 import { formatISODateTime } from 'common/helpers/DateHelper'
 import LogService from './LogService'
-import IMessage from 'common/interfaces/IMessage'
+import type IMessage from 'common/interfaces/IMessage'
+import type IAuthMessage from 'common/interfaces/IAuthMessage'
 
 interface WebSocketEventTypes {
-  message: (message: IMessage) => void
-  time: (date: Date) => void
+  message: (message: IAuthMessage) => void
+  time: (date: string) => void
 }
 
 export default class WebSocketService {
@@ -27,18 +28,27 @@ export default class WebSocketService {
 
     this.io.on('connection', (socket: Socket) => {
       LogService.info('User connected')
+      let pingInterval: any
       
-      socket.on('message', async (message: IMessage, callback: Function) => {
+      socket.on('message', async (message: IAuthMessage, callback: Function) => {
+        // TODO: Authenticate message.
+
         this.emitter?.emit('message', {
           chatId: message.chatId,
+          userId: message.userId,
+          userType: message.userType,
+          name: message.name,
           text: message.text,
           time: formatISODateTime(new Date()),
-          username: message.username,
         })
         callback()
       })
 
-      setInterval(() => {
+      socket.on('disconnect', () => {
+        clearInterval(pingInterval)
+      })
+
+      pingInterval = setInterval(() => {
         socket.emit('ping', formatISODateTime(new Date()))
       }, 5000)
     })

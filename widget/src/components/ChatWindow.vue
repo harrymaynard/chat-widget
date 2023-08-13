@@ -31,9 +31,12 @@ const handleKeypressMessageInput = (event: KeyboardEvent) => {
 
 const sendMessage = () => {
   emit('sendMessage', {
+    chatId: '1',
+    userId: store.userId,
+    userType: store.userType,
     text: messageInputText.value,
     time: new Date(),
-    username: 'user'
+    name: store.userName,
   })
   messageInputText.value = ''
 }
@@ -51,7 +54,11 @@ const sendMessage = () => {
     </a>
   </div>
   <div class="chat-body">
-    <ChatConversation :messages="store.messages"/>
+    <ChatConversation
+      :messages="store.messages"
+      :userId="store.userId"
+      :userType="store.userType"
+    />
   </div>
   <div class="chat-footer">
     <form @submit.prevent="handleSubmitMessage">

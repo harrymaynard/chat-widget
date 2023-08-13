@@ -1,27 +1,25 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import type IMessage from 'common/interfaces/IMessage'
+import UserType from 'common/enums/UserType'
 
 const initialMessages: Array<IMessage> = [
-  { chatId: '1', text: 'message content here', time: new Date(), username: 'user' },
-  { chatId: '1', text: 'message content here', time: new Date(), username: 'user' },
-  { chatId: '1', text: 'message content here', time: new Date(), username: 'user' },
-  { chatId: '1', text: 'message content here', time: new Date(), username: 'user' },
-  { chatId: '1', text: 'message content here', time: new Date(), username: 'user' },
-  { chatId: '1', text: 'message content here', time: new Date(), username: 'user' },
-  { chatId: '1', text: 'message content here', time: new Date(), username: 'server' },
-  { chatId: '1', text: 'message content here', time: new Date(), username: 'user' },
-  { chatId: '1', text: 'message content here', time: new Date(), username: 'user' },
-  { chatId: '1', text: 'message content here', time: new Date(), username: 'user' },
-  { chatId: '1', text: 'message content here', time: new Date(), username: 'user' },
-  { chatId: '1', text: 'message content here', time: new Date(), username: 'user' },
-  { chatId: '1', text: 'message content here', time: new Date(), username: 'user' },
-  { chatId: '1', text: 'message content here', time: new Date(), username: 'user' },
-  { chatId: '1', text: 'message content here', time: new Date(), username: 'user' },
+  { chatId: '1', userId: '123', userType: UserType.Member, text: 'message content here', time: new Date(), name: 'John' },
+  { chatId: '1', userId: '123', userType: UserType.Member, text: 'message content here', time: new Date(), name: 'John' },
+  { chatId: '1', userId: '123', userType: UserType.Member, text: 'message content here', time: new Date(), name: 'John' },
+  { chatId: '1', userId: '456', userType: UserType.Admin, text: 'message content here', time: new Date(), name: 'Sally' },
+  { chatId: '1', userId: '123', userType: UserType.Member, text: 'message content here', time: new Date(), name: 'John' },
+  { chatId: '1', userId: '456', userType: UserType.Admin, text: 'message content here', time: new Date(), name: 'Sally' },
+  { chatId: '1', userId: '123', userType: UserType.Member, text: 'message content here', time: new Date(), name: 'John' },
+  { chatId: '1', userId: '123', userType: UserType.Member, text: 'message content here', time: new Date(), name: 'John' },
+  { chatId: '1', userId: '123', userType: UserType.Member, text: 'message content here', time: new Date(), name: 'John' },
 ]
 
 export const usePortalStore = defineStore('chat-portal', () => {
   const chats = ref<Map<string, Array<IMessage>>>(new Map())
+  const userId = ref<string>('456')
+  const userType = ref<UserType>(UserType.Admin)
+  const userName = ref<string>('Sally')
 
   if (process.env.NODE_ENV === 'development') {
     chats.value.set('1', initialMessages)
@@ -39,6 +37,9 @@ export const usePortalStore = defineStore('chat-portal', () => {
   }
 
   return {
+    userId,
+    userType,
+    userName,
     addMessageByChatId,
     getMessagesByChatId,
   }

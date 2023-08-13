@@ -4,6 +4,7 @@ import { useRouter } from 'vue-router'
 import { usePortalStore } from '@/store/PortalStore'
 import { useWebSocketClientService } from 'common/services/WebSocketClientService'
 import { formatISODateTime } from 'common/helpers/DateHelper'
+import UserType from 'common/enums/UserType'
 import SideBar from '@/components/SideBar.vue'
 import ChatConversation from 'common/components/ChatConversation.vue'
 
@@ -20,10 +21,12 @@ const handleSubmitSendMessage = () => {
   }
   
   webSocketClientService.sendMessage({
+    chatId,
+    userId: store.userId,
+    userType: store.userType,
     text: messageInputText.value,
     time: formatISODateTime(new Date()),
-    username: 'admin',
-    chatId,
+    name: store.userName,
   })
 }
 </script>
@@ -35,7 +38,11 @@ const handleSubmitSendMessage = () => {
     </div>
     <div class="flex-fill d-flex flex-column">
       <div class="flex-fill position-relative">
-        <ChatConversation :messages="store.getMessagesByChatId(chatId)"/>
+        <ChatConversation
+          :messages="store.getMessagesByChatId(chatId)"
+          :userId="store.userId"
+          :userType="store.userType"
+        />
       </div>
       <div class="m-3">
         <form

@@ -1,7 +1,11 @@
+import UserType from '../enums/UserType'
+
 export default interface IMessage {
   chatId: string
+  userId: string
+  userType: UserType
   text: string
   time: string | Date
-  username: string
+  name: string
   isRead?: boolean
 }

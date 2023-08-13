@@ -6,6 +6,7 @@
   "main": "./src/index.ts",
   "exports": {
     "./components/*": "./src/components/*",
+    "./enums/*": "./src/enums/*",
     "./helpers/*": "./src/helpers/*.ts",
     "./interfaces/*": "./src/interfaces/*.ts",
     "./services/*": "./src/services/*.ts"

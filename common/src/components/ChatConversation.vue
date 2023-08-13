@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { type PropType, type Ref, ref, watch, onMounted, nextTick } from 'vue'
 import type IMessage from '../interfaces/IMessage'
+import UserType from '../enums/UserType'
 import ChatMessage from './ChatMessage.vue'
 
 const props = defineProps({
@@ -8,6 +9,14 @@ const props = defineProps({
     type: Array as PropType<Array<IMessage>>,
     default: () => []
   },
+  userId: {
+    type: String,
+    default: null,
+  },
+  userType: {
+    type: String as PropType<UserType>,
+    default: UserType.Member,
+  }
 })
 
 let lastKnownMessageCount: number = 0
@@ -50,7 +59,11 @@ const scrollToLatestMessage = () => {
       v-for="(message, index) in props.messages"
       :key="index"
     >
-      <ChatMessage :message="message"/>
+      <ChatMessage
+        :message="message"
+        :userId="props.userId"
+        :userType="props.userType"
+      />
     </template>
   </div>
 </template>
