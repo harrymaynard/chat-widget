@@ -28,6 +28,7 @@ const handleSubmitSendMessage = () => {
     time: formatISODateTime(new Date()),
     name: store.userName,
   })
+  messageInputText.value = ''
 }
 </script>
 

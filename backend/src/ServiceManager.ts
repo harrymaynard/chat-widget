@@ -1,12 +1,20 @@
 import LogService from './services/LogService'
+import DBService from './services/DBService'
 import WebServerService from './services/WebServerService'
 import WebSocketService from './services/WebSocketService'
 
 class ServiceManager {
+  private dbService: DBService
   private webServerService: WebServerService
   private webSocketService: WebSocketService
-
+  
   constructor() {
+    this.dbService = new DBService({
+      dbHost: process.env.DB_HOST as string,
+      dbUsername: process.env.DB_USERNAME as string,
+      dbPassword: process.env.DB_PASSWORD as string,
+      dbName: process.env.DB_NAME as string,
+    })
     this.webServerService = new WebServerService()
     this.webSocketService = new WebSocketService()
   }

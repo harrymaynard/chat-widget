@@ -23,7 +23,7 @@ export const useStore = defineStore('chat-widget', () => {
   const userName = ref<string>('John')
 
   if (process.env.NODE_ENV === 'development') {
-    messages.value = initialMessages
+    // messages.value = initialMessages
   }
   
   return {

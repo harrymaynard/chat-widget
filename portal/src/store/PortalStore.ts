@@ -23,7 +23,7 @@ export const usePortalStore = defineStore('chat-portal', () => {
   const userName = ref<string>('Sally')
 
   if (process.env.NODE_ENV === 'development') {
-    chats.value.set('1', initialMessages)
+    // chats.value.set('1', initialMessages)
   }
   
   const addMessageByChatId = (chatId: string, message: IMessage): void => {

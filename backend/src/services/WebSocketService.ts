@@ -95,6 +95,7 @@ export default class WebSocketService {
       
       // Setup emitter.
       this.emitter = new Emitter<WebSocketEventTypes>(pubClient)
+      LogService.info('Connected to Redis server')
     } catch (error) {
       LogService.error('Failed to connect to Redis server')
     }
