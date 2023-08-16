@@ -17,6 +17,7 @@ const initialMessages: Array<IMessage> = [
 
 export const useStore = defineStore('chat-widget', () => {
   const messages = ref<Array<IMessage>>([])
+  const chatId = ref<string>('1')
   const userId = ref<string>('123')
   const userType = ref<UserType>(UserType.Member)
   const userName = ref<string>('John')
@@ -26,6 +27,7 @@ export const useStore = defineStore('chat-widget', () => {
   }
   
   return {
+    chatId,
     messages,
     userId,
     userName,

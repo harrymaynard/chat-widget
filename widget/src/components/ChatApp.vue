@@ -7,7 +7,10 @@ import IconChat from '@/components/icons/IconChat.vue'
 import ChatWindow from '@/components/ChatWindow.vue'
 
 const store = useStore()
-const webSocketClientService = useWebSocketClientService()
+
+const webSocketClientService = useWebSocketClientService({
+  chatId: store.chatId,
+})
 
 const isChatOpen = ref<boolean>(false)
 const isChatConnected = ref<boolean>(false)

@@ -4,8 +4,8 @@ import { Emitter } from '@socket.io/redis-emitter'
 import { createClient } from 'redis'
 import { formatISODateTime } from 'common/helpers/DateHelper'
 import LogService from './LogService'
-import type IMessage from 'common/interfaces/IMessage'
 import type IAuthMessage from 'common/interfaces/IAuthMessage'
+import type IJoinRoomDTO from 'common/interfaces/IJoinRoomDTO'
 
 interface WebSocketEventTypes {
   message: (message: IAuthMessage) => void
@@ -33,7 +33,7 @@ export default class WebSocketService {
       socket.on('message', async (message: IAuthMessage, callback: Function) => {
         // TODO: Authenticate message.
 
-        this.emitter?.emit('message', {
+        this.emitter?.to(`room-${message.chatId}`).emit('message', {
           chatId: message.chatId,
           userId: message.userId,
           userType: message.userType,
@@ -41,6 +41,13 @@ export default class WebSocketService {
           text: message.text,
           time: formatISODateTime(new Date()),
         })
+        callback()
+      })
+
+      socket.on('join-room', async (payload: IJoinRoomDTO, callback: Function) => {
+        // TODO: Authenticate message.
+
+        await socket.join(`room-${payload.chatId}`)
         callback()
       })
 

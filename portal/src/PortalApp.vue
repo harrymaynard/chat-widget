@@ -7,7 +7,9 @@ import AppHeader from '@/components/AppHeader.vue'
 import AppFooter from '@/components/AppFooter.vue'
 
 const store = usePortalStore()
-const webSocketClientService = useWebSocketClientService()
+const webSocketClientService = useWebSocketClientService({
+  chatId: store.chatId,
+})
 
 onMounted(async () => {
   webSocketClientService.on('message', handleReceiveMessage)

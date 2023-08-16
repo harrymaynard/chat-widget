@@ -1,11 +1,14 @@
 import { type Socket, Manager } from 'socket.io-client'
 import { EventEmitter } from 'events'
 import type IMessage from '../interfaces/IMessage'
+import IJoinRoomDTO from 'common/interfaces/IJoinRoomDTO'
 
 interface IConfig {
+  chatId?: string
   path?: string
 }
 
+const DEFAULT_CHAT_ID: string = 'invalid'
 const DEFAULT_PATH: string = '/api/socket'
 
 export class WebSocketClientService {
@@ -13,9 +16,11 @@ export class WebSocketClientService {
   public socket: Socket | null = null
   private socketManager: Manager | null = null
   private path: string
+  private chatId: string
   
   constructor(config: IConfig = {}) {
     this.eventEmitter = new EventEmitter()
+    this.chatId = typeof config.chatId === 'string' ? config.chatId : DEFAULT_CHAT_ID
     this.path = typeof config.path === 'string' ? config.path : DEFAULT_PATH
   }
 
@@ -52,9 +57,14 @@ export class WebSocketClientService {
 
   private attachListeners(socket: Socket) {
     // Listen for connection event.
-    socket.on('connect', () => {
-      this.eventEmitter.emit('connect')
-      console.log('connected to websocket endpoint')
+    socket.on('connect', async () => {
+      const payload: IJoinRoomDTO = {
+        chatId: this.chatId
+      }
+      this.socket?.emit(`join-room`, payload, () => {
+        this.eventEmitter.emit('connect')
+        console.log('connected to websocket endpoint')
+      })
     })
 
     // Listen for websocket disconnect events.

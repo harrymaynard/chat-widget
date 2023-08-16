@@ -17,6 +17,7 @@ const initialMessages: Array<IMessage> = [
 
 export const usePortalStore = defineStore('chat-portal', () => {
   const chats = ref<Map<string, Array<IMessage>>>(new Map())
+  const chatId = ref<string>('1')
   const userId = ref<string>('456')
   const userType = ref<UserType>(UserType.Admin)
   const userName = ref<string>('Sally')
@@ -37,6 +38,7 @@ export const usePortalStore = defineStore('chat-portal', () => {
   }
 
   return {
+    chatId,
     userId,
     userType,
     userName,
