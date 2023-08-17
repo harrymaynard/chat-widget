@@ -1,4 +1,5 @@
-import { createConnection } from 'mysql'
+import { Sequelize } from 'sequelize'
+import LogService from './LogService'
 
 interface IDBServiceConfig {
   dbHost: string
@@ -12,7 +13,7 @@ export let service: DBService
 export default class DBService {
   private readonly config: IDBServiceConfig
 
-  private connection: any
+  private sequelize: any
 
   constructor(config: IDBServiceConfig) {
     this.config = config
@@ -20,14 +21,21 @@ export default class DBService {
   }
 
   public async start() {
-    this.connection = createConnection({
-      host: this.config.dbHost,
-      user: this.config.dbUsername,
-      password: this.config.dbPassword,
-      database: this.config.dbName
-    })
+    try {
+      this.sequelize = new Sequelize({
+        dialect: 'mysql',
+        host: this.config.dbHost,
+        username: this.config.dbUsername,
+        password: this.config.dbPassword,
+        database: this.config.dbName,
+      })
 
-    // TODO: Leverage Sequelize.
+      await this.sequelize.authenticate()
+      LogService.info('Connected to MySQL database')
+    } catch (error: any) {
+      LogService.error('Unable to connect to the database.')
+      LogService.error(error.toString())
+    }
 
     return Promise.resolve()
   }

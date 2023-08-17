@@ -2,9 +2,15 @@ import ip from 'ip'
 import ServiceManager from './ServiceManager'
 
 export default class Application {
+  private serviceManager: ServiceManager
+
+  constructor() {
+    this.serviceManager = new ServiceManager()
+  }
+
   async start(): Promise<void> {
     const networkIPAddress = await this.getNetworkIPAddress()
-    await ServiceManager.start()
+    await this.serviceManager.start()
 
     console.log('Started server.')
     console.log('************************************')
@@ -18,7 +24,7 @@ export default class Application {
   }
 
   async stop(): Promise<void> {
-    await ServiceManager.stop()
+    await this.serviceManager.stop()
     console.log('Successfully shutdown server.')
   }
 

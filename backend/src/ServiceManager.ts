@@ -21,6 +21,7 @@ class ServiceManager {
 
   public async start(): Promise<void> {
     try {
+      await this.dbService.start()
       const httpServer = await this.webServerService.start()
       await this.webSocketService.start(httpServer)
       httpServer.listen(process.env.WEB_SERVER_PORT)
@@ -33,6 +34,7 @@ class ServiceManager {
     try {
       await this.webServerService.stop()
       await this.webSocketService.stop()
+      await this.dbService.stop()
     } catch (error) {
       LogService.error('Failed to safely stop server')
     }
@@ -44,4 +46,4 @@ class ServiceManager {
   }
 }
 
-export default new ServiceManager()
+export default ServiceManager
