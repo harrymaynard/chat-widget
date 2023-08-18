@@ -1,6 +1,8 @@
 import { Sequelize } from 'sequelize'
 import LogService from './LogService'
 import User, { tableSchema as userTableSchema } from '../models/User'
+import Chat, { tableSchema as chatTableSchema } from '../models/Chat'
+import Message, { tableSchema as messageTableSchema } from '../models/Message'
 import UserType from 'common/enums/UserType'
 
 interface IDBServiceConfig {
@@ -59,20 +61,37 @@ export default class DBService {
   }
 
   private async setupTables() {
-    // Setup User models, database mappings, and mock data.
+    // Setup User models and database mappings.
     User.init(userTableSchema, { sequelize: this.sequelize })
+    Chat.init(chatTableSchema, { sequelize: this.sequelize })
+    Message.init(messageTableSchema, { sequelize: this.sequelize })
     await User.sync({ force: true })
-    await User.create({
+    await Chat.sync({ force: true })
+    await Message.sync({ force: true })
+    
+    // Create mock data.
+    const userSally = await User.create({
       name: 'Sally',
       userType: UserType.Admin,
     })
-    await User.create({
+    const userJohn = await User.create({
       name: 'John',
       userType: UserType.Member,
     })
     await User.create({
       name: 'Emily',
       userType: UserType.Member,
+    })
+    const chat = await Chat.create({})
+    await Message.create({
+      chatId: chat.dataValues.chatId,
+      userId: userJohn.dataValues.userId,
+      text: 'Hi, how do I submit a change of last name?'
+    })
+    await Message.create({
+      chatId: chat.dataValues.chatId,
+      userId: userSally.dataValues.userId,
+      text: 'I can update that for you. What is your new last name?'
     })
   }
 }

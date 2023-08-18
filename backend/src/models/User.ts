@@ -2,13 +2,13 @@ import { DataTypes, Model } from 'sequelize'
 import UserType from 'common/enums/UserType'
 
 export default class User extends Model {
-  declare id: number
+  declare userId: number
   declare name: string
   declare userType: UserType
 }
 
 export const tableSchema = {
-  id: {
+  userId: {
     type: DataTypes.INTEGER,
     autoIncrement: true,
     primaryKey: true,
@@ -18,5 +18,11 @@ export const tableSchema = {
   },
   userType: {
     type: DataTypes.STRING,
-  }
+  },
+  createdAt: {
+    type: DataTypes.DATE(3),
+  },
+  updatedAt: {
+    type: DataTypes.DATE(3),
+  },
 }
