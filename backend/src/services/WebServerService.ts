@@ -3,10 +3,12 @@ import path from 'path'
 import http from 'http'
 import { fileURLToPath } from 'url'
 import logService from './LogService'
-import { getMessages } from '../routes/ChatRoutes'
+import { getChatById } from '../routes/ChatRoutes'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
+
+const API_BASE_PATH: string = '/api'
 
 export default class ExpressService {
   private app: any
@@ -30,7 +32,7 @@ export default class ExpressService {
       return next()
     })
 
-    this.app.get('/api/chat/getMessages', getMessages)
+    this.app.get(`${API_BASE_PATH}/chat/:chatId`, getChatById)
 
     // All other GET requests not handled before will return the frontend app
     // this.app.get('*', (req: any, res: any) => {
