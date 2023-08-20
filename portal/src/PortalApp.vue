@@ -8,7 +8,7 @@ import AppFooter from '@/components/AppFooter.vue'
 
 const store = usePortalStore()
 const webSocketClientService = useWebSocketClientService({
-  chatId: store.chatId,
+  chatId: 1,
 })
 
 onMounted(async () => {

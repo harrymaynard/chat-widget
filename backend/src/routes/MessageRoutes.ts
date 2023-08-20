@@ -23,7 +23,7 @@ export const postMessage = async (request: any, response: any) => {
       return
     }
 
-    // Query for valid chatId.
+    // Query for valid userId.
     const userResult = await User.findOne({
       where: {
         userId: requestPayload.userId,
@@ -41,9 +41,6 @@ export const postMessage = async (request: any, response: any) => {
       userId: requestPayload.userId,
       text: requestPayload.text,
     })
-    
-    // Return newly created message.
-    response.send(messageResult.dataValues)
 
     // Send message to listening participants.
     webSocketService.sendMessage({
@@ -53,8 +50,11 @@ export const postMessage = async (request: any, response: any) => {
       userType: userResult.dataValues.userType,
       name: userResult.dataValues.userName,
       text: messageResult.dataValues.text,
-      time: messageResult.dataValues.createdAt,
+      createdAt: messageResult.dataValues.createdAt,
     })
+
+    // Return newly created message.
+    response.send(messageResult.dataValues)
   } catch (error) {
     logService.error('Something bad happened.')
     response.status(500)

@@ -36,7 +36,7 @@ const sendMessage = () => {
     userId: store.userId,
     userType: store.userType,
     text: messageInputText.value,
-    time: formatISODateTime(new Date()),
+    createdAt: formatISODateTime(new Date()),
     name: store.userName,
   })
   messageInputText.value = ''

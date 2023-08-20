@@ -34,7 +34,7 @@ const componentClassNames = computed(() => {
   <div :class="componentClassNames">
     <div class="info">
       <span>{{ props.message?.name }}</span>
-      <span class="time"> ({{ formatISODateTime(props.message?.time) }})</span>
+      <span class="time"> ({{ formatISODateTime(props.message?.createdAt) }})</span>
     </div>
     <div class="message">
       <span>{{ props.message?.text }}</span>

@@ -27,6 +27,10 @@ watch(isChatOpen, async (newValue) => {
     try {
       await webSocketClientService.connect()
       webSocketClientService.on('message', handleReceiveMessage)
+
+      const chatResponse = await APIClientService.getChatById(store.chatId)
+      store.chat = chatResponse.data
+
       isChatConnected.value = true
     } catch (error) {
       console.error('failed to connect', error)
@@ -36,7 +40,9 @@ watch(isChatOpen, async (newValue) => {
 
 const handleReceiveMessage = (message: IMessage) => {
   console.log('message received', message)
-  store.messages.push(message)
+  if (Array.isArray(store.chat?.messages)) {
+    store.chat?.messages.push(message)
+  }
 }
 
 const handleClickChatIcon = () => {
@@ -53,7 +59,6 @@ const handleSendMessage = async (message: IMessage) => {
   } catch (error) {
     console.error('Failed to post message.')
   }
-  
 }
 </script>
 

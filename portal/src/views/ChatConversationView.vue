@@ -2,30 +2,37 @@
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { useRouter } from 'vue-router'
 import { usePortalStore } from '@/store/PortalStore'
-import { useWebSocketClientService } from 'common/services/WebSocketClientService'
+import { useAPIClientService } from 'common/services/APIClientService'
 import { formatISODateTime } from 'common/helpers/DateHelper'
-import UserType from 'common/enums/UserType'
 import SideBar from '@/components/SideBar.vue'
 import ChatConversation from 'common/components/ChatConversation.vue'
 
 const router = useRouter()
 const store = usePortalStore()
-const webSocketClientService = useWebSocketClientService()
+const APIClientService = useAPIClientService()
 
 const chatId: number = parseInt(router.currentRoute.value.params.chatId as string)
 const messageInputText = ref<string>('')
+
+onMounted(async () => {
+  try {
+    const response = await APIClientService.getChatById(chatId)
+    store.setChatById(chatId, response.data)
+  } catch (error) {
+    console.error('Error fetching chat data:', error)
+  }
+})
 
 const handleSubmitSendMessage = () => {
   if (!messageInputText.value) {
     return
   }
-  
-  webSocketClientService.sendMessage({
+  APIClientService.postMessage({
     chatId,
     userId: store.userId,
     userType: store.userType,
     text: messageInputText.value,
-    time: formatISODateTime(new Date()),
+    createdAt: formatISODateTime(new Date()),
     name: store.userName,
   })
   messageInputText.value = ''

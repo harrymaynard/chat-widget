@@ -96,10 +96,6 @@ export class WebSocketClientService {
     })
   }
 
-  public async sendMessage(message: IMessage) {
-    await this.socket?.emitWithAck('message', message)
-  }
-
   public on(eventName: string, callback: (...args: any[]) => void): void {
     this.eventEmitter.on(eventName, callback)
   }

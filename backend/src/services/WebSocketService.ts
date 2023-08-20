@@ -35,20 +35,6 @@ export default class WebSocketService {
     this.io.on('connection', (socket: Socket) => {
       LogService.info('User connected')
       let pingInterval: any
-      
-      socket.on('message', async (message: IAuthMessage, callback: Function) => {
-        // TODO: Authenticate message.
-
-        this.emitter?.to(`room-${message.chatId}`).emit('message', {
-          chatId: message.chatId,
-          userId: message.userId,
-          userType: message.userType,
-          name: message.name,
-          text: message.text,
-          time: formatISODateTime(new Date()),
-        })
-        callback()
-      })
 
       socket.on('join-room', async (payload: IJoinRoomDTO, callback: Function) => {
         // TODO: Authenticate message.

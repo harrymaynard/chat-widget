@@ -7,6 +7,6 @@ export default interface IMessage {
   userType: UserType
   name: string
   text: string
-  time: string | Date
+  createdAt: string | Date
   isRead?: boolean
 }
