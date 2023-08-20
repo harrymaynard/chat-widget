@@ -9,6 +9,9 @@ docker run --name chat-widget-redis -d -p 6379:6379 redis:7
 Create and run Docker container for MySQL server:
 ```bash
 docker run --name chat-widget-mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=password -d mysql:8
+docker exec -it chat-widget-mysql bash -l
+mysql -uroot -ppassword
+CREATE DATABASE chat_widget;
 ```
 
 Install project dependencies:
