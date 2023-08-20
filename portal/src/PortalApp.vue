@@ -28,7 +28,7 @@ onBeforeUnmount(() => {
 
 const handleReceiveMessage = (message: IMessage) => {
   console.log('received message', message)
-  store.addMessageByChatId(message.chatId as string, message)
+  store.addMessageByChatId(message.chatId as number, message)
 }
 </script>
 

@@ -10,7 +10,7 @@ const props = defineProps({
     default: () => []
   },
   userId: {
-    type: String,
+    type: Number,
     default: null,
   },
   userType: {

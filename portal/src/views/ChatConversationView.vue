@@ -12,7 +12,7 @@ const router = useRouter()
 const store = usePortalStore()
 const webSocketClientService = useWebSocketClientService()
 
-const chatId: string = router.currentRoute.value.params.chatId as string
+const chatId: number = parseInt(router.currentRoute.value.params.chatId as string)
 const messageInputText = ref<string>('')
 
 const handleSubmitSendMessage = () => {

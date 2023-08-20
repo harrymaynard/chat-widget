@@ -5,12 +5,16 @@ import { createClient } from 'redis'
 import { formatISODateTime } from 'common/helpers/DateHelper'
 import LogService from './LogService'
 import type IAuthMessage from 'common/interfaces/IAuthMessage'
+import type IMessage from 'common/interfaces/IMessage'
 import type IJoinRoomDTO from 'common/interfaces/IJoinRoomDTO'
+import type ILeaveRoomDTO from 'common/interfaces/ILeaveRoomDTO'
 
 interface WebSocketEventTypes {
   message: (message: IAuthMessage) => void
   time: (date: string) => void
 }
+
+let service: WebSocketService
 
 export default class WebSocketService {
   private io: Server | null = null
@@ -46,8 +50,13 @@ export default class WebSocketService {
 
       socket.on('join-room', async (payload: IJoinRoomDTO, callback: Function) => {
         // TODO: Authenticate message.
-
         await socket.join(`room-${payload.chatId}`)
+        callback()
+      })
+
+      socket.on('leave-room', async (payload: ILeaveRoomDTO, callback: Function) => {
+        // TODO: Authenticate message.
+        await socket.leave(`room-${payload.chatId}`)
         callback()
       })
 
@@ -100,4 +109,15 @@ export default class WebSocketService {
       LogService.error('Failed to connect to Redis server')
     }
   }
+
+  public sendMessage(message: IMessage) {
+    this.emitter?.to(`room-${message.chatId}`).emit('message', message)
+  }
+}
+
+export const useWebSocketService = (): WebSocketService => {
+  if (!service) {
+    throw new Error('WebSocketService singleton not instantiated.')
+  }
+  return service
 }

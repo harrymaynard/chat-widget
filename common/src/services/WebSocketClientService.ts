@@ -4,11 +4,11 @@ import type IMessage from '../interfaces/IMessage'
 import IJoinRoomDTO from 'common/interfaces/IJoinRoomDTO'
 
 interface IConfig {
-  chatId?: string
+  chatId?: number
   path?: string
 }
 
-const DEFAULT_CHAT_ID: string = 'invalid'
+const DEFAULT_CHAT_ID: number = 0
 const DEFAULT_PATH: string = '/api/socket'
 
 export class WebSocketClientService {
@@ -16,11 +16,11 @@ export class WebSocketClientService {
   public socket: Socket | null = null
   private socketManager: Manager | null = null
   private path: string
-  private chatId: string
+  private chatId: number
   
   constructor(config: IConfig = {}) {
     this.eventEmitter = new EventEmitter()
-    this.chatId = typeof config.chatId === 'string' ? config.chatId : DEFAULT_CHAT_ID
+    this.chatId = typeof config.chatId === 'number' ? config.chatId : DEFAULT_CHAT_ID
     this.path = typeof config.path === 'string' ? config.path : DEFAULT_PATH
   }
 

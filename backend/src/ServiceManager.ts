@@ -27,6 +27,7 @@ class ServiceManager {
       httpServer.listen(process.env.WEB_SERVER_PORT)
     } catch (error) {
       LogService.error('Failed to start server.')
+      console.error(error)
     }
   }
 

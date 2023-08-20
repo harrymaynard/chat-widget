@@ -31,7 +31,7 @@ const handleKeypressMessageInput = (event: KeyboardEvent) => {
 
 const sendMessage = () => {
   emit('sendMessage', {
-    chatId: '1',
+    chatId: store.chatId,
     userId: store.userId,
     userType: store.userType,
     text: messageInputText.value,
