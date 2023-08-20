@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import { useStore } from '@/store/Store'
+import { formatISODateTime } from 'common/helpers/DateHelper'
 import type IMessage from 'common/interfaces/IMessage'
 import IconDash from '@/components/icons/IconDash.vue'
 import ChatConversation from 'common/components/ChatConversation.vue'
@@ -35,7 +36,7 @@ const sendMessage = () => {
     userId: store.userId,
     userType: store.userType,
     text: messageInputText.value,
-    time: new Date(),
+    time: formatISODateTime(new Date()),
     name: store.userName,
   })
   messageInputText.value = ''

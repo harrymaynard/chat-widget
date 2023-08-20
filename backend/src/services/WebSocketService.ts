@@ -21,7 +21,9 @@ export default class WebSocketService {
   private emitter: Emitter | null = null
   private pingTimer: any
 
-  constructor() {}
+  constructor() {
+    service = this
+  }
 
   public async start(httpServer: any): Promise<void> {
     this.io = new Server(httpServer, {

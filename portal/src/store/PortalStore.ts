@@ -18,7 +18,7 @@ const initialMessages: Array<IMessage> = [
 export const usePortalStore = defineStore('chat-portal', () => {
   const chats = ref<Map<number, Array<IMessage>>>(new Map())
   const chatId = ref<number>(1)
-  const userId = ref<number>(456)
+  const userId = ref<number>(1)
   const userType = ref<UserType>(UserType.Admin)
   const userName = ref<string>('Sally')
 

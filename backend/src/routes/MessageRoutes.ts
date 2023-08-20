@@ -24,7 +24,7 @@ export const postMessage = async (request: any, response: any) => {
     }
 
     // Query for valid chatId.
-    const userResult = await Chat.findOne({
+    const userResult = await User.findOne({
       where: {
         userId: requestPayload.userId,
       },

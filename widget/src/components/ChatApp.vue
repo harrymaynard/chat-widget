@@ -2,12 +2,14 @@
 import { ref, watch, onBeforeUnmount } from 'vue'
 import { useStore } from '@/store/Store'
 import { useWebSocketClientService } from 'common/services/WebSocketClientService'
+import { useAPIClientService } from 'common/services/APIClientService'
 import type IMessage from 'common/interfaces/IMessage'
 import IconChat from '@/components/icons/IconChat.vue'
 import ChatWindow from '@/components/ChatWindow.vue'
 
 const store = useStore()
 
+const APIClientService = useAPIClientService()
 const webSocketClientService = useWebSocketClientService({
   chatId: store.chatId,
 })
@@ -45,8 +47,13 @@ const handleCloseChatWindow = () => {
   isChatOpen.value = false
 }
 
-const handleSendMessage = (message: IMessage) => {
-  webSocketClientService.sendMessage(message)
+const handleSendMessage = async (message: IMessage) => {
+  try {
+    await APIClientService.postMessage(message)
+  } catch (error) {
+    console.error('Failed to post message.')
+  }
+  
 }
 </script>
 
