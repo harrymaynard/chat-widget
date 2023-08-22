@@ -2,7 +2,9 @@ import logService from '../services/LogService'
 import Message from '../models/Message'
 import User from '../models/User'
 import Chat from '../models/Chat'
+import ChatParticipation from '../models/ChatParticipation'
 import LogService from '../services/LogService'
+import type IChatsDTO from 'common/interfaces/IChatsDTO'
 
 export const getChatById = async (request: any, response: any) => {
   const chatId = parseInt(request.params.chatId)
@@ -55,7 +57,60 @@ export const getChatById = async (request: any, response: any) => {
     }
     response.send(payload)
   } catch (error) {
-    logService.error('Something bad happened.')
+    logService.error('getChatById REST endpoint failed.')
+    response.status(500)
+    response.end()
+  }
+}
+
+export const getChats = async (request: any, response: any) => {
+  try {
+    const payload: IChatsDTO = {
+      chats: []
+    }
+    // Query for all chat conversations.
+    // TODO: Current implementation is definitely sub-optimal. Definitely needs improvement.
+    const chatResult = await Chat.findAll()
+    for (let i=0; i<chatResult.length; i++) {
+      const chat = chatResult[i].dataValues
+
+      const participants = await ChatParticipation.findAll({
+        where: {
+          chatId: chat.chatId,
+        },
+      })
+      const participantNames: Array<string> = []
+      const participantUserPromises: Array<Promise<void>> = []
+
+      participants.forEach(item => {
+        participantUserPromises.push(new Promise<void>(async (resolve, reject) => {
+          try {
+            const participantUser = await User.findOne({
+              where: {
+                userId: item.dataValues.userId,
+              },
+            })
+            participantNames.push(participantUser?.dataValues.name)
+            resolve()
+          } catch (error) {
+            reject()
+          }
+        }))
+      })
+      await Promise.all(participantUserPromises)
+
+      payload.chats.push({
+        chatId: chat.chatId,
+        participantNames,
+        createdAt: chat.createdAt,
+      })
+    }
+    
+    // Send response.
+    response.send(payload)
+  } catch (error) {
+    logService.error('getChats REST endpoint failed.')
+    console.error(error)
     response.status(500)
     response.end()
   }

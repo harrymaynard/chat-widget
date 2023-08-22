@@ -3,6 +3,7 @@ import LogService from './LogService'
 import User, { tableSchema as userTableSchema } from '../models/User'
 import Chat, { tableSchema as chatTableSchema } from '../models/Chat'
 import Message, { tableSchema as messageTableSchema } from '../models/Message'
+import ChatParticipation, { tableSchema as chatParticipationTableSchema } from '../models/ChatParticipation'
 import UserType from 'common/enums/UserType'
 
 interface IDBServiceConfig {
@@ -50,6 +51,7 @@ export default class DBService {
       } catch (error: any) {
         LogService.error('Error initializing DB tables.')
         LogService.error(error.toString())
+        //console.error(error)
       }
     }
 
@@ -62,12 +64,31 @@ export default class DBService {
 
   private async setupTables() {
     // Setup User models and database mappings.
-    User.init(userTableSchema, { sequelize: this.sequelize })
-    Chat.init(chatTableSchema, { sequelize: this.sequelize })
-    Message.init(messageTableSchema, { sequelize: this.sequelize })
-    await User.sync({ force: true })
-    await Chat.sync({ force: true })
-    await Message.sync({ force: true })
+    User.init(userTableSchema, {
+      sequelize: this.sequelize,
+      tableName: 'Users',
+      modelName: 'User',
+    })
+    Chat.init(chatTableSchema, {
+      sequelize: this.sequelize,
+      tableName: 'Chats',
+      modelName: 'Chat',
+    })
+    Message.init(messageTableSchema, {
+      sequelize: this.sequelize,
+      tableName: 'Messages',
+      modelName: 'Message',
+    })
+    ChatParticipation.init(chatParticipationTableSchema, {
+      sequelize: this.sequelize,
+      tableName: 'ChatParticipations',
+      modelName: 'ChatParticipation',
+    })
+
+    // Create tables in DB.
+    await this.sequelize.sync({
+      force: true,
+    })
     
     // Create mock data.
     const userSally = await User.create({
@@ -92,6 +113,14 @@ export default class DBService {
       chatId: chat.dataValues.chatId,
       userId: userSally.dataValues.userId,
       text: 'I can update that for you. What is your new last name?'
+    })
+    await ChatParticipation.create({
+      chatId: chat.dataValues.chatId,
+      userId: userJohn.dataValues.userId,
+    })
+    await ChatParticipation.create({
+      chatId: chat.dataValues.chatId,
+      userId: userSally.dataValues.userId,
     })
   }
 }

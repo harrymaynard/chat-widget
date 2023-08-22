@@ -3,7 +3,7 @@ import path from 'path'
 import http from 'http'
 import { fileURLToPath } from 'url'
 import logService from './LogService'
-import { getChatById } from '../routes/ChatRoutes'
+import { getChatById, getChats } from '../routes/ChatRoutes'
 import { postMessage } from '../routes/MessageRoutes'
 
 const __filename = fileURLToPath(import.meta.url)
@@ -33,6 +33,7 @@ export default class ExpressService {
       return next()
     })
 
+    this.app.get(`${API_BASE_PATH}/chats`, getChats)
     this.app.get(`${API_BASE_PATH}/chat/:chatId`, getChatById)
     this.app.post(`${API_BASE_PATH}/chat/:chatId/message`, postMessage)
 
