@@ -1,5 +1,23 @@
 <script lang="ts" setup>
+import { ref, onMounted } from 'vue'
+import { useAPIClientService } from 'common/services/APIClientService'
+import type IChatsDTO from 'common/interfaces/IChatsDTO'
+import { formatArray } from 'common/helpers/StringHelper'
 
+const APIClientService = useAPIClientService()
+
+const viewModel = ref<IChatsDTO>()
+const isErrorChatsListAPI = ref<boolean>(false)
+
+onMounted(async () => {
+  try {
+    const { data } = await APIClientService.getChats()
+    viewModel.value = data
+  } catch (error) {
+    console.error('Failed to fetch chats list.', error)
+    isErrorChatsListAPI.value = true
+  }
+})
 </script>
 
 <template>
@@ -9,17 +27,26 @@
       <thead>
         <tr>
           <th>Session ID</th>
-          <th>User ID</th>
+          <th>Participants</th>
           <th>Date</th>
         </tr>
       </thead>
       <tbody>
-        <tr>
+        <tr
+          v-for="chat in viewModel?.chats"
+          :key="chat.chatId"
+        >
           <td>
-            <RouterLink to="/chat/1">123</RouterLink>
+            <RouterLink :to="`/chat/${chat.chatId}`">{{ chat.chatId }}</RouterLink>
           </td>
-          <td>12345678</td>
-          <td>2023-08-09</td>
+          <td>{{ formatArray(chat.participantNames) }}</td>
+          <td>{{ chat.createdAt }}</td>
+        </tr>
+        <tr v-if="isErrorChatsListAPI">
+          <td
+            class="text-center text-danger"
+            colspan="3"
+          >Unable to fetch chats list</td>
         </tr>
       </tbody>
     </table>
