@@ -31,7 +31,7 @@ export const getChatById = async (request: any, response: any) => {
         ['createdAt', 'ASC'],
       ],
     })
-    const messages = messagesResult.map(item => ({
+    let messages = messagesResult.map(item => ({
       ...item.dataValues
     }))
     
@@ -47,6 +47,12 @@ export const getChatById = async (request: any, response: any) => {
     })
     const users = usersResult.map(item => ({
       ...item.dataValues
+    }))
+
+    // Add "name" to message objects.
+    messages = messages.map(message => ({
+      ...message,
+      name: users.find(user => user.userId === message.userId)?.name || ''
     }))
 
     // Create response payload.

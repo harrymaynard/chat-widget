@@ -66,7 +66,7 @@ export const postMessage = async (request: any, response: any) => {
       messageId: messageResult.dataValues.messageId,
       userId: requestPayload.userId,
       userType: userResult.dataValues.userType,
-      name: userResult.dataValues.userName,
+      name: userResult.dataValues.name,
       text: messageResult.dataValues.text,
       createdAt: messageResult.dataValues.createdAt,
     })
