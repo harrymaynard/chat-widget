@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref, watch, onBeforeUnmount } from 'vue'
+import { ref, watch, onMounted, onBeforeUnmount } from 'vue'
 import { useStore } from '@/store/Store'
 import { useWebSocketClientService } from 'common/services/WebSocketClientService'
 import { useAPIClientService } from 'common/services/APIClientService'
@@ -16,8 +16,15 @@ const webSocketClientService = useWebSocketClientService({
 
 const isChatOpen = ref<boolean>(false)
 const isChatConnected = ref<boolean>(false)
+const isChatToolsOpen = ref<boolean>(false)
+const name = ref<string>('')
+
+onMounted(() => {
+  window.addEventListener('keypress', handleGlobalKeyPress)
+})
 
 onBeforeUnmount(() => {
+  window.removeEventListener('keypress', handleGlobalKeyPress)
   webSocketClientService.off('message', handleReceiveMessage)
   webSocketClientService.disconnect()
 })
@@ -60,10 +67,28 @@ const handleSendMessage = async (message: IMessage) => {
     console.error('Failed to post message.')
   }
 }
+
+// Open Chat tools menu.
+const handleGlobalKeyPress = (event: KeyboardEvent) => {
+  if (
+    event.ctrlKey &&
+    event.altKey &&
+    event.shiftKey &&
+    event.code === 'KeyP'
+  ) {
+    isChatToolsOpen.value = true
+  }
+}
+
+// Save name and create user chat session if one doesn't exist.
+const handleSubmitChatTools = () => {
+  store.userName = name.value
+  isChatToolsOpen.value = false
+}
 </script>
 
 <template>
-  <div class="component">
+  <div>
     <a
       href="javascript:void(0)"
       class="chat-icon-container"
@@ -80,6 +105,22 @@ const handleSendMessage = async (message: IMessage) => {
           @close="handleCloseChatWindow"
           @sendMessage="handleSendMessage"
         />
+      </div>
+    </TransitionGroup>
+    <TransitionGroup name="chat-tools">
+      <div
+        v-if="isChatToolsOpen"
+        class="chat-tools-container"
+      >
+        <form @submit.prevent="handleSubmitChatTools">
+          <input
+            type="text"
+            v-model="name"
+          />
+          <button type="submit">
+            Save
+          </button>
+        </form>
       </div>
     </TransitionGroup>
   </div>
@@ -119,5 +160,14 @@ $spacing: 10px;
   display: flex;
   flex-direction: column;
   box-shadow: 0 0 10px 0px rgba(0, 0, 0, .5);
+}
+
+.chat-tools-container {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #FFF;
+  border-top: solid thin #CCC;
 }
 </style>
