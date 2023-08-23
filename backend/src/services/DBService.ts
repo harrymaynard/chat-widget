@@ -123,6 +123,10 @@ export default class DBService {
       userId: userSally.dataValues.userId,
     })
   }
+
+  public getSequelize(): Sequelize {
+    return this.sequelize
+  }
 }
 
 export const useDB = () => {
