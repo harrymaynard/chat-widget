@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { ref, watch, onMounted, onBeforeUnmount } from 'vue'
 import { useStore } from '@/store/Store'
-import { useWebSocketClientService } from 'common/services/WebSocketClientService'
+import { useWebSocketClientService, WebSocketClientService } from 'common/services/WebSocketClientService'
 import { useAPIClientService } from 'common/services/APIClientService'
 import type IMessage from 'common/interfaces/IMessage'
 import IconChat from '@/components/icons/IconChat.vue'
@@ -11,9 +11,7 @@ import UserType from 'common/enums/UserType'
 const store = useStore()
 
 const APIClientService = useAPIClientService()
-const webSocketClientService = useWebSocketClientService({
-  chatId: store.chatId,
-})
+let webSocketClientService: WebSocketClientService
 
 const isChatOpen = ref<boolean>(false)
 const isChatConnected = ref<boolean>(false)
@@ -34,6 +32,9 @@ onBeforeUnmount(() => {
 watch(isChatOpen, async (newValue) => {
   if (newValue && !isChatConnected.value) {
     try {
+      webSocketClientService = useWebSocketClientService({
+        chatId: store.chatId,
+      })
       await webSocketClientService.connect()
       webSocketClientService.on('message', handleReceiveMessage)
 
@@ -90,8 +91,10 @@ const handleSubmitChatTools = async () => {
       name: name.value?.trim(),
       userType: UserType.Member
     })
-    console.log('login response:', response.data)
+    store.chatId = response.data.chatId || 0
+    store.userId = response.data.userId
     store.userName = response.data.name
+    store.userType = response.data.userType
     isChatToolsOpen.value = false
   } catch (error) {
     console.error(error)

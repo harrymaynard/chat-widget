@@ -6,21 +6,31 @@ import { useAPIClientService } from 'common/services/APIClientService'
 import { formatISODateTime } from 'common/helpers/DateHelper'
 import SideBar from '@/components/SideBar.vue'
 import ChatConversation from 'common/components/ChatConversation.vue'
+import { useWebSocketClientService } from 'common/services/WebSocketClientService'
 
 const router = useRouter()
 const store = usePortalStore()
 const APIClientService = useAPIClientService()
+const webSocketClientService = useWebSocketClientService()
 
 const chatId: number = parseInt(router.currentRoute.value.params.chatId as string)
 const messageInputText = ref<string>('')
 
 onMounted(async () => {
   try {
+    if (!webSocketClientService.isConnected()) {
+      await webSocketClientService.connect()
+    }
+    webSocketClientService.joinRoom(chatId)
     const response = await APIClientService.getChatById(chatId)
     store.setChatById(chatId, response.data)
   } catch (error) {
     console.error('Error fetching chat data:', error)
   }
+})
+
+onBeforeUnmount(() => {
+  webSocketClientService.leaveRoom(chatId)
 })
 
 const handleSubmitSendMessage = () => {

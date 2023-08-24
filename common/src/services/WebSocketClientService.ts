@@ -1,7 +1,8 @@
 import { type Socket, Manager } from 'socket.io-client'
 import { EventEmitter } from 'events'
 import type IMessage from '../interfaces/IMessage'
-import IJoinRoomDTO from 'common/interfaces/IJoinRoomDTO'
+import type IJoinRoomDTO from 'common/interfaces/IJoinRoomDTO'
+import type ILeaveRoomDTO from 'common/interfaces/ILeaveRoomDTO'
 
 interface IConfig {
   chatId?: number
@@ -17,6 +18,7 @@ export class WebSocketClientService {
   private socketManager: Manager | null = null
   private path: string
   private chatId: number
+  private connected: boolean = false
   
   constructor(config: IConfig = {}) {
     this.eventEmitter = new EventEmitter()
@@ -62,6 +64,7 @@ export class WebSocketClientService {
         chatId: this.chatId
       }
       this.socket?.emit(`join-room`, payload, () => {
+        this.connected = true
         this.eventEmitter.emit('connect')
         console.log('connected to websocket endpoint')
       })
@@ -69,6 +72,7 @@ export class WebSocketClientService {
 
     // Listen for websocket disconnect events.
     socket.on('disconnect', (reason: string) => {
+      this.connected = false
       this.eventEmitter.emit('disconnect')
       console.log('disconnected from websocket endpoint')
 
@@ -96,12 +100,36 @@ export class WebSocketClientService {
     })
   }
 
+  public isConnected(): boolean {
+    return this.connected
+  }
+
   public on(eventName: string, callback: (...args: any[]) => void): void {
     this.eventEmitter.on(eventName, callback)
   }
 
   public off(eventName: string, callback: (...args: any[]) => void): void {
     this.eventEmitter.off(eventName, callback)
+  }
+
+  public joinRoom(chatId: number) {
+    const payload: IJoinRoomDTO = {
+      chatId,
+    }
+    const time = performance.now()
+    this.socket?.emit(`join-room`, payload, (response: any) => {
+      this.eventEmitter.emit('join-room', response)
+      console.log('joined room. Time:', performance.now() - time)
+    })
+  }
+
+  public leaveRoom(chatId: number) {
+    const payload: ILeaveRoomDTO = {
+      chatId,
+    }
+    this.socket?.emit(`leave-room`, payload, (response: any) => {
+      this.eventEmitter.emit('leave-room', response)
+    })
   }
 }
 
