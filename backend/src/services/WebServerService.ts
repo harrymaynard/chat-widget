@@ -5,6 +5,7 @@ import { fileURLToPath } from 'url'
 import logService from './LogService'
 import { getChatById, getChats } from '../routes/ChatRoutes'
 import { postMessage } from '../routes/MessageRoutes'
+import { postLogin } from '../routes/UserRoutes'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -36,6 +37,7 @@ export default class ExpressService {
     this.app.get(`${API_BASE_PATH}/chats`, getChats)
     this.app.get(`${API_BASE_PATH}/chat/:chatId`, getChatById)
     this.app.post(`${API_BASE_PATH}/chat/:chatId/message`, postMessage)
+    this.app.post(`${API_BASE_PATH}/user`, postLogin)
 
     // All other GET requests not handled before will return the frontend app
     // this.app.get('*', (req: any, res: any) => {

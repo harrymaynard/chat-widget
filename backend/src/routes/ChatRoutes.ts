@@ -1,4 +1,3 @@
-import logService from '../services/LogService'
 import Message from '../models/Message'
 import User from '../models/User'
 import Chat from '../models/Chat'
@@ -63,7 +62,7 @@ export const getChatById = async (request: any, response: any) => {
     }
     response.send(payload)
   } catch (error) {
-    logService.error('getChatById REST endpoint failed.')
+    LogService.error('getChatById REST endpoint failed.')
     response.status(500)
     response.end()
   }
@@ -115,7 +114,7 @@ export const getChats = async (request: any, response: any) => {
     // Send response.
     response.send(payload)
   } catch (error) {
-    logService.error('getChats REST endpoint failed.')
+    LogService.error('getChats REST endpoint failed.')
     console.error(error)
     response.status(500)
     response.end()

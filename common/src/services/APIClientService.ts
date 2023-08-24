@@ -2,6 +2,8 @@ import axios, { AxiosResponse } from 'axios'
 import IMessage from 'common/interfaces/IMessage'
 import type IChatsDTO from 'common/interfaces/IChatsDTO'
 import type IChat from 'common/interfaces/IChat'
+import type ILoginRequestDTO from 'common/interfaces/ILoginRequestDTO'
+import ILoginResponseDTO from 'common/interfaces/ILoginResponseDTO'
 
 const API_BASE_PATH: string = '/api'
 
@@ -16,6 +18,10 @@ class APIClientService {
 
   postMessage(message: IMessage): Promise<AxiosResponse<IMessage>> {
     return axios.post<IMessage>(`${API_BASE_PATH}/chat/${message.chatId}/message`, message)
+  }
+
+  postLogin(payload: ILoginRequestDTO) {
+    return axios.post<ILoginResponseDTO>(`${API_BASE_PATH}/user`, payload)
   }
 }
 

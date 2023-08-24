@@ -6,6 +6,7 @@ import { useAPIClientService } from 'common/services/APIClientService'
 import type IMessage from 'common/interfaces/IMessage'
 import IconChat from '@/components/icons/IconChat.vue'
 import ChatWindow from '@/components/ChatWindow.vue'
+import UserType from 'common/enums/UserType'
 
 const store = useStore()
 
@@ -17,6 +18,7 @@ const webSocketClientService = useWebSocketClientService({
 const isChatOpen = ref<boolean>(false)
 const isChatConnected = ref<boolean>(false)
 const isChatToolsOpen = ref<boolean>(false)
+const isLoadingLogin = ref<boolean>(false)
 const name = ref<string>('')
 
 onMounted(() => {
@@ -81,8 +83,23 @@ const handleGlobalKeyPress = (event: KeyboardEvent) => {
 }
 
 // Save name and create user chat session if one doesn't exist.
-const handleSubmitChatTools = () => {
-  store.userName = name.value
+const handleSubmitChatTools = async () => {
+  isLoadingLogin.value = true
+  try {
+    const response = await APIClientService.postLogin({
+      name: name.value?.trim(),
+      userType: UserType.Member
+    })
+    console.log('login response:', response.data)
+    store.userName = response.data.name
+    isChatToolsOpen.value = false
+  } catch (error) {
+    console.error(error)
+  }
+  isLoadingLogin.value = false
+}
+
+const handleClickCancelChatTools = () => {
   isChatToolsOpen.value = false
 }
 </script>
@@ -116,9 +133,20 @@ const handleSubmitChatTools = () => {
           <input
             type="text"
             v-model="name"
+            :disabled="isLoadingLogin"
           />
-          <button type="submit">
+          <button
+            type="submit"
+            :disabled="isLoadingLogin"
+          >
             Save
+          </button>
+          <button
+            type="button"
+            :disabled="isLoadingLogin"
+            @click="handleClickCancelChatTools"
+          >
+            Cancel
           </button>
         </form>
       </div>
@@ -169,5 +197,6 @@ $spacing: 10px;
   bottom: 0;
   background: #FFF;
   border-top: solid thin #CCC;
+  padding: 10px;
 }
 </style>
