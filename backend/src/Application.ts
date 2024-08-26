@@ -1,4 +1,5 @@
-import ip from 'ip'
+import dns from 'node:dns'
+import os from 'node:os'
 import ServiceManager from './ServiceManager'
 
 export default class Application {
@@ -29,9 +30,16 @@ export default class Application {
   }
 
   private getNetworkIPAddress(): Promise<string> {
-    return new Promise((resolve) => {
-      const address = ip.address()
-      resolve(address)
+    const options = { family: 4 }
+
+    return new Promise((resolve, reject) => {
+      dns.lookup(os.hostname(), options, (err, addr) => {
+        if (err) {
+          reject(err)
+        } else {
+          resolve(addr)
+        }
+      })
     })
   }
 }
